@@ -2,7 +2,7 @@
 menu:
   Home: /
   Archives: /archives
-rss: /atom.xml
+rss: /rss2.xml
 
 # Content
 excerpt_link: Read More
@@ -17,20 +17,10 @@ widgets:
 - archive
 - recent_posts
 
-# display widgets at the bottom of index pages (pagination == 2)
-index_widgets:
-# - category
-# - tagcloud
-# - archive
-
-# widget behavior
-archive_type: 'monthly'
-show_count: false
-
 # Miscellaneous
 google_analytics:
-favicon: /favicon.png
-twitter:
+favicon: /favicon.ico
+twitter: RedNagaSec
 google_plus:
 fb_admins:
 fb_app_id:

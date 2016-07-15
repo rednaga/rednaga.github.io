@@ -1,14 +1,10 @@
 title: "Dalvik Virtual Execution with SmaliVM"
 tags:
-  - smalivm
-  - smali
   - dalvik
-  - simplify
-  - deobfuscation
   - android
 comments: true
 date: 2016-04-30 00:00
-author: Caleb1
+author: caleb
 ---
 
 Sometimes it's useful to know what code does without executing it. You could read the code with your eyeballs and run it with your brain but that takes too long and it's really hard, and executing code on a real machine can get messy, especially if it's malicious. But what can you do if you want to understand a lot of malicious code? What if it's obfuscated and even harder for your brain? Maybe you want to do some fancy analysis so you can accurately know when certain methods are called? Well, for this there's executing on a _virtual_ machine, i.e. virtual execution. There are many different ways of implementing a virtual machine. You could simulate an entire computer like  VirtualBox and QEMU or you could simulate a smaller subset. The general idea is the same between all types: build a program which simulates executing other programs in all the important ways and gracefully fails for everything else.
@@ -83,7 +79,7 @@ Nodes are indexed by address, but it's not part of these graph images to keep th
 
 Now I want to show you what a conditional looks like:
 
-```
+```smali
 .method public static sometimesReturnTwo(I)I
     .locals 1
 
@@ -128,7 +124,7 @@ Values which aren't known are represented by an `UnknownValue` object. For examp
 
 All operations are _aware_ of `UnknownValue`s and most operations that involve them result in a new `UnknownValue`. Check it:
 
-```
+```java
 x = UnknownValue;
 y = 10;
 z = x + y; // z is unknown!
