@@ -12,6 +12,7 @@ Android apps are much easier to modify than those of traditional desktop operati
 Why is this important? Any app which has had malware injected into it or has been cracked or pirated will have *probably* been disassembled and recompiled by dexlib. Also, there are very few reasons why a developer with access to the source code would use dexlib. Therefore, you know an app has been modified by dexlib, it's probably interesting to you if you're worried about malware or app piracy. This is where [APKiD](https://github.com/rednaga/APKiD) comes in. In addition to detecting packers, obfuscators, and other weird stuff, it can also identify if an app was compiled by the standard Android compilers or dexlib.
 <!-- more -->
 
+# APKiD
 APKiD can look at an Android APK or DEX file and detect the fingerprints of several different compilers:
 
 * dx - standard Android SDK compiler
@@ -22,9 +23,7 @@ APKiD can look at an Android APK or DEX file and detect the fingerprints of seve
 
 If any of the dexlib families have been used to create a DEX file, you can be fairly suspicious it has been cracked and it may have been injected with malware. For more info on how we used compiler fingerprinting to detect malware and cracks, check out our talk [Android Compiler Fingerprinting](/2016/07/30/2016-07-30_apkid_and_android_compiler_fingerprinting/).
 
-What follows now is a technical description of how each compiler is detected.
-
-## dx and dexmerge detection
+## Detecting dx and dexmerge
 
 The main way dx and dexmerge are identified are by looking at the ordering of the map types in the DEX file.
 
@@ -120,7 +119,7 @@ map (no sort)
 
 This list may be handy for ongoing research into fingerprinting different compilers.
 
-## dexlib 1.x detection
+## Detecting dexlib 1.x
 
 This is the first library that allowed disassembling and compiling of DEX files without the source code. It was created by Ben "Jesus Freke" Gruver. It's detected primarily by looking at the physical sorting of the strings.
 
@@ -130,7 +129,7 @@ The DEX format requires that the string table, which list all the strings and th
 
 A lot of commercial packers and obfuscators and certain malware families still use dexlib 1.x under the hood because it's pretty solid and they're too lazy to update.
 
-## dexlib 2.x beta detection
+## Detecting dexlib 2.x beta
 
 Dexlib 1.x was rewritten into dexlib 2, and while it was in a beta release, we noticed that it did something weird with how it marked class interfaces.
 
@@ -140,15 +139,124 @@ You can see `AC 27 00 00` all over the file. That's the offset to the "null" int
 
 This was removed before dexlib 2.x was moved out of beta.
 
-## dexlib 2.x detection
+## Detecting dexlib 2.x
 
 This compiler is also detected by also looking at the map type order. Assembling a DEX file is complex and there are a lot of tiny little details you need to mimic to create an absolutely perfect facsimile. That's a lot of extra work most developers don't want to do.
 
 As an aside, I spend a lot of time using this library and looking at it's code while working on a generic Android deobfuscator called [Simplify](https://travis-ci.org/CalebFenton/simplify). And I've got to say, it's some really impressive and _clean_ code that I've learned a lot from. Kudos to [Ben](https://github.com/JesusFreke).
 
+# Using APKiD
+
+The usage of APKiD is quite simple. You just point it at folders, files, whatever, and it'll try and find APKs and DEX files. It'll also decompose APKs and try and find compressed APKs, DEX, and ELF files. Here's output of an example run:
+
+```
+$ apkid test-data/apk test-data/dex
+[!] APKiD 0.9.3 :: from RedNaga :: rednaga.io
+[*] test-data/dex/dexguard1.dex
+ |-> compiler : dexlib 1.x
+ |-> obfuscator : DexGuard
+[*] test-data/dex/dexguard2.dex
+ |-> anti_disassembly : illegal class name
+ |-> compiler : dexlib 1.x
+ |-> obfuscator : DexGuard
+[*] test-data/dex/dexguard3.dex
+ |-> anti_disassembly : illegal class name
+ |-> compiler : dexlib 1.x
+ |-> obfuscator : DexGuard
+[*] test-data/dex/dexlib1.dex
+ |-> compiler : dexlib 1.x
+[*] test-data/dex/dexlib2.dex
+ |-> compiler : dexlib 2.x
+[*] test-data/dex/dexmerge.dex
+ |-> compiler : Android SDK (dexmerge)
+[*] test-data/dex/dexprotector1.dex
+ |-> compiler : dexlib 1.x
+ |-> obfuscator : DexProtect
+[*] test-data/dex/dexprotector2.dex
+ |-> compiler : dexlib 1.x
+ |-> obfuscator : DexProtect
+[*] test-data/dex/dexprotector3.dex
+ |-> compiler : dexlib 1.x
+ |-> obfuscator : DexProtect
+[*] test-data/dex/dx.dex
+ |-> compiler : Android SDK (dx)
+```
+
+You can see that the test samples of DexGuard and DexProtector both use dexlib 1.x. APKiD also supports JSON output so it's easier to integrate into other toolchains:
+
+```json
+{
+  "test-data/dex/dexprotector1.dex": {
+    "obfuscator": [
+      "DexProtect"
+    ],
+    "compiler": [
+      "dexlib 1.x"
+    ]
+  },
+  "test-data/dex/dexlib1.dex": {
+    "compiler": [
+      "dexlib 1.x"
+    ]
+  },
+  "test-data/dex/dexguard3.dex": {
+    "obfuscator": [
+      "DexGuard"
+    ],
+    "anti_disassembly": [
+      "illegal class name"
+    ],
+    "compiler": [
+      "dexlib 1.x"
+    ]
+  },
+  "test-data/dex/dexlib2.dex": {
+    "compiler": [
+      "dexlib 2.x"
+    ]
+  },
+  "test-data/dex/dexguard1.dex": {
+    "obfuscator": [
+      "DexGuard"
+    ],
+    "compiler": [
+      "dexlib 1.x"
+    ]
+  },
+  "test-data/dex/dexmerge.dex": {
+    "compiler": [
+      "Android SDK (dexmerge)"
+    ]
+  },
+  "test-data/dex/dx.dex": {
+    "compiler": [
+      "Android SDK (dx)"
+    ]
+  },
+  "test-data/dex/dexguard2.dex": {
+    "obfuscator": [
+      "DexGuard"
+    ],
+    "anti_disassembly": [
+      "illegal class name"
+    ],
+    "compiler": [
+      "dexlib 1.x"
+    ]
+  },
+  "test-data/dex/dexprotector2.dex": {
+    "obfuscator": [
+      "DexProtect"
+    ],
+    "compiler": [
+      "dexlib 1.x"
+    ]
+  }
+}
+```
 
 ## Ideas for the Future
 
-This post leaves out all of the stuff [Tim](https://github.com/strazzere) found out about how Android XML files are changed by different compilers, e.g. Apktool. We still need to add these fingerprints into APKiD.
+This post leaves out all of the Android XML fingerprinting details [Tim](https://github.com/strazzere) researched that can identify tools like Apktool. We still need to add these fingerprints into APKiD.
 
 There is also a library called ASMDEX which looks capable of creating DEX files. At the time of this original research a few years ago, I didn't have time to look into it, and no one was talking about how to use it. A lot of the stuff was over my head, but I've since had a lot of practice using ASM to create Java class files, so I think I can manage now. It would be nice to add fingerprints for ASMDEX. Anything created by that would probably be pretty weird.
