@@ -32,21 +32,90 @@ The main way dx and dexmerge are identified are by looking at the ordering of th
 
 This is a good place to identify different compilers because the order is not defined in the spec so it's up to the compiler how it wants to order these things.
 
-In order to have something that's copy / pastable, here's some Java code for the normal type order:
+In order to have something that's copy / paste-able, here's some Java code for the normal type order:
 
+```java
+private static final TypeCode[] NORMAL_TYPE_ORDER = new TypeCode[] {
+  TypeCode.HEADER_ITEM,
+  TypeCode.STRING_ID_ITEM,
+  TypeCode.TYPE_ID_ITEM,
+  TypeCode.PROTO_ID_ITEM,
+  TypeCode.FIELD_ID_ITEM,
+  TypeCode.METHOD_ID_ITEM,
+  TypeCode.CLASS_DEF_ITEM,
+  TypeCode.ANNOTATION_SET_REF_LIST,
+  TypeCode.ANNOTATION_SET_ITEM,
+  TypeCode.CODE_ITEM,
+  TypeCode.ANNOTATIONS_DIRECTORY_ITEM,
+  TypeCode.TYPE_LIST,
+  TypeCode.STRING_DATA_ITEM,
+  TypeCode.DEBUG_INFO_ITEM,
+  TypeCode.ANNOTATION_ITEM,
+  TypeCode.ENCODED_ARRAY_ITEM,
+  TypeCode.CLASS_DATA_ITEM,
+  TypeCode.MAP_LIST
+};
 ```
-private static final TypeCode[] NORMAL_TYPE_ORDER = new TypeCode[] {  TypeCode.HEADER_ITEM  , TypeCode.STRING_ID_ITEM  , TypeCode.TYPE_ID_ITEM  , TypeCode.PROTO_ID_ITEM  , TypeCode.FIELD_ID_ITEM  , TypeCode.METHOD_ID_ITEM  , TypeCode.CLASS_DEF_ITEM  , TypeCode.ANNOTATION_SET_REF_LIST  , TypeCode.ANNOTATION_SET_ITEM  , TypeCode.CODE_ITEM  , TypeCode.ANNOTATIONS_DIRECTORY_ITEM  , TypeCode.TYPE_LIST  , TypeCode.STRING_DATA_ITEM  , TypeCode.DEBUG_INFO_ITEM  , TypeCode.ANNOTATION_ITEM  , TypeCode.ENCODED_ARRAY_ITEM  , TypeCode.CLASS_DATA_ITEM  , TypeCode.MAP_LIST};
-```
 
-This is for dexmerge type order and includes links to the code that I looked at to help me understand why it's different than dx ordering:
+The dexmerge type order was derived by looking at [DexMerger.java](http://osxr.org/android/source/dalvik/dx/src/com/android/dx/merge/DexMerger.java#0111). I got the typeIds order by looking [here](http://osxr.org/android/source/dalvik/dx/src/com/android/dx/merge/DexMerger.java#0904).
 
-```// Merge type order derived from:// http://osxr.org/android/source/dalvik/dx/src/com/android/dx/merge/DexMerger.java#0111// typeIds sort is from:// http://osxr.org/android/source/dalvik/dx/src/com/android/dx/merge/DexMerger.java#0904private static final TypeCode[] DEXMERGE_TYPE_ORDER = new TypeCode[] {  TypeCode.HEADER_ITEM  , TypeCode.STRING_ID_ITEM  , TypeCode.TYPE_ID_ITEM  , TypeCode.PROTO_ID_ITEM  , TypeCode.FIELD_ID_ITEM  , TypeCode.METHOD_ID_ITEM  , TypeCode.CLASS_DEF_ITEM  , TypeCode.MAP_LIST  , TypeCode.TYPE_LIST  , TypeCode.ANNOTATION_SET_REF_LIST  , TypeCode.ANNOTATION_SET_ITEM  , TypeCode.CLASS_DATA_ITEM  , TypeCode.CODE_ITEM  , TypeCode.STRING_DATA_ITEM  , TypeCode.DEBUG_INFO_ITEM  , TypeCode.ANNOTATION_ITEM  , TypeCode.ENCODED_ARRAY_ITEM  , TypeCode.ANNOTATIONS_DIRECTORY_ITEM};
+```java
+private static final TypeCode[] DEXMERGE_TYPE_ORDER = new TypeCode[] {
+  TypeCode.HEADER_ITEM,
+  TypeCode.STRING_ID_ITEM,
+  TypeCode.TYPE_ID_ITEM,
+  TypeCode.PROTO_ID_ITEM,
+  TypeCode.FIELD_ID_ITEM,
+  TypeCode.METHOD_ID_ITEM,
+  TypeCode.CLASS_DEF_ITEM,
+  TypeCode.MAP_LIST,
+  TypeCode.TYPE_LIST,
+  TypeCode.ANNOTATION_SET_REF_LIST,
+  TypeCode.ANNOTATION_SET_ITEM,
+  TypeCode.CLASS_DATA_ITEM,
+  TypeCode.CODE_ITEM,
+  TypeCode.STRING_DATA_ITEM,
+  TypeCode.DEBUG_INFO_ITEM,
+  TypeCode.ANNOTATION_ITEM,
+  TypeCode.ENCODED_ARRAY_ITEM,
+  TypeCode.ANNOTATIONS_DIRECTORY_ITEM
+};
 ```
 
 In general, the format of a DEX file and the items inside are like this:
 
-```
-header  HEADER_ITEMstringIds  STRING_ID_ITEMtypeIds  TYPE_ID_ITEMprotoIds  PROTO_ID_ITEMfieldIds  FIELD_ID_ITEMmethodIds  METHOD_ID_ITEMclassDefs  CLASS_DEF_ITEMwordData (sort by TYPE)  ANNOTATION_SET_REF_LIST  ANNOTATION_SET_ITEM  CODE_ITEM  ANNOTATIONS_DIRECTORY_ITEMtypeLists (no sort)  TYPE_LISTstringData (sort by INSTANCE)  STRING_DATA_ITEMbyteData (sort by TYPE)  DEBUG_INFO_ITEM  ANNOTATION_ITEM  ENCODED_ARRAY_ITEMclassData (no sort)  CLASS_DATA_ITEMmap (no sort)  MAP_LIST
+```plain
+header
+  HEADER_ITEM
+stringIds
+  STRING_ID_ITEM
+typeIds
+  TYPE_ID_ITEM
+protoIds
+  PROTO_ID_ITEM
+fieldIds
+  FIELD_ID_ITEM
+methodIds
+  METHOD_ID_ITEM
+classDefs
+  CLASS_DEF_ITEM
+wordData (sort by TYPE)
+  ANNOTATION_SET_REF_LIST
+  ANNOTATION_SET_ITEM
+  CODE_ITEM
+  ANNOTATIONS_DIRECTORY_ITEM
+typeLists (no sort)
+  TYPE_LIST
+stringData (sort by INSTANCE)
+  STRING_DATA_ITEM
+byteData (sort by TYPE)
+  DEBUG_INFO_ITEM
+  ANNOTATION_ITEM
+  ENCODED_ARRAY_ITEM
+classData (no sort)
+  CLASS_DATA_ITEM
+map (no sort)
+  MAP_LIST
 ```
 
 This list may be handy for ongoing research into fingerprinting different compilers.
@@ -63,7 +132,7 @@ A lot of commercial packers and obfuscators and certain malware families still u
 
 ## dexlib 2.x beta detection
 
-Dexlib 1.x was rewrriten into dexlib 2, and while it was in a beta release, we noticed that it did something weird with how it marked class interfaces.
+Dexlib 1.x was rewritten into dexlib 2, and while it was in a beta release, we noticed that it did something weird with how it marked class interfaces.
 
 ![](/images/detecting_pirated_and_malicious_android_apps_with_apkid/abnormal_class_interfaces.png)
 
@@ -73,7 +142,7 @@ This was removed before dexlib 2.x was moved out of beta.
 
 ## dexlib 2.x detection
 
-This compiler is also detected by also looking at the map type order. Assembling a DEX file is complex and there are a lot of tiny little details you need to mimic to create an absolutely perfect facsimile. That's a lot of extra work most devs don't want to do.
+This compiler is also detected by also looking at the map type order. Assembling a DEX file is complex and there are a lot of tiny little details you need to mimic to create an absolutely perfect facsimile. That's a lot of extra work most developers don't want to do.
 
 As an aside, I spend a lot of time using this library and looking at it's code while working on a generic Android deobfuscator called [Simplify](https://travis-ci.org/CalebFenton/simplify). And I've got to say, it's some really impressive and _clean_ code that I've learned a lot from. Kudos to [Ben](https://github.com/JesusFreke).
 
