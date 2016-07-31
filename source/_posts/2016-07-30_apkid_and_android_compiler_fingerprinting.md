@@ -1,4 +1,4 @@
-title: "APKiD Released"
+title: "APKiD and Android Compiler Fingerprinting"
 tags:
 	- apkid
 	- research
@@ -7,10 +7,14 @@ date: 2016-07-30 00:00
 author: caleb
 ---
 
-We recently gave a presentation at [HITCON 2016](http://hitcon.org/2016/CMT/) where we released a tool called: [APKiD](https://github.com/rednaga/APKiD). It's basically PEiD for Android -- it detects several compilers, obfuscators, and packers and we're adding to it whenever we find new stuff. You're welcome to submit your rules also.
+We recently gave a presentation at [HITCON 2016](http://hitcon.org/2016/CMT/) called [Android Compiler Fingerprinting](http://hitcon.org/2016/CMT/slide/day1-r0-e-1.pdf)
+ where in we released a tool called: [APKiD](https://github.com/rednaga/APKiD). It's basically PEiD for Android -- it detects several compilers, obfuscators, and packers and we're adding to it whenever we find new stuff. You're welcome to submit your rules also.
 
-For more information, check out our slides:
-[Android Compiler Fingerprinting](http://hitcon.org/2016/CMT/slide/day1-r0-e-1.pdf)
+Here's the full abstract:
+
+> Compiler fingerprinting is a technique for identifying the compiler used to create a binary. This is because there is some flexibility in file formats, and different compilers usually produce binaries with identical behaviors but with subtle differences in structure and organization. We developed a tool which can determine the compiler used to create Dalvik executables and Android binary XML files. This allowed us to distinguish between apps compiled from original source code and apps which had been modified using non-standard compilers such as dexlib. Our hypothesis was that the two primary reasons reasons for modifying an Android app were for 1.) cracking and piracy and 2.) injecting malicious code. We tested this assumption by comparing the compiler profiles of various app markets with varying tolerances for cracked and malicious apps to see if the percentage of modified apps was inversely proportional to how strict the store was about policing submissions. We found that strict markets such as Google Play and Amazon had significantly lower rates of modified apps compared to less strict markets such as Aptoide and BlapkMarket. Additionally, we analyzed ~138,000 benign apps and known malware samples to compare the rates of modification between both groups. We found much higher rates of modification within the malware sample set with many malware families consisting entirely of modified apps.
+
+> This talk presents the history and evolution of various Android tools, introduces tools for fingerprinting compilers, summarizes the technical details for how the tools work, and reviews applications for using compiler fingerprinting to improve detection and classification of malware and pirated apps.
 
 We'll post the video of our talk as soon as it's available!
 
