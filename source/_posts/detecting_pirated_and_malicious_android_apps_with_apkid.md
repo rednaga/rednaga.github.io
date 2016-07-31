@@ -21,7 +21,7 @@ APKiD can look at an Android APK or DEX file and detect the fingerprints of seve
 * dexlib 2.x beta
 * dexlib 2.x
 
-If any of the dexlib families have been used to create a DEX file, you can be fairly suspicious it has been cracked and it may have been injected with malware. For more info on how we used compiler fingerprinting to detect malware and cracks, check out our talk [Android Compiler Fingerprinting](/2016/07/30/2016-07-30_apkid_and_android_compiler_fingerprinting/).
+If any of the dexlib families have been used to create a DEX file, you can be fairly suspicious it has been cracked and it may have been injected with malware. For more info on how we used compiler fingerprinting to detect malware and cracks, check out our talk [Android Compiler Fingerprinting](/2016/07/30/apkid_and_android_compiler_fingerprinting/).
 
 ## Detecting dx and dexmerge
 
