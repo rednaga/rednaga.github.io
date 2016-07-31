@@ -34,13 +34,13 @@ This is a good place to identify different compilers because the order is not de
 
 In order to have something that's copy / pastable, here's some Java code for the normal type order:
 
-```java
+```
 private static final TypeCode[] NORMAL_TYPE_ORDER = new TypeCode[] {  TypeCode.HEADER_ITEM  , TypeCode.STRING_ID_ITEM  , TypeCode.TYPE_ID_ITEM  , TypeCode.PROTO_ID_ITEM  , TypeCode.FIELD_ID_ITEM  , TypeCode.METHOD_ID_ITEM  , TypeCode.CLASS_DEF_ITEM  , TypeCode.ANNOTATION_SET_REF_LIST  , TypeCode.ANNOTATION_SET_ITEM  , TypeCode.CODE_ITEM  , TypeCode.ANNOTATIONS_DIRECTORY_ITEM  , TypeCode.TYPE_LIST  , TypeCode.STRING_DATA_ITEM  , TypeCode.DEBUG_INFO_ITEM  , TypeCode.ANNOTATION_ITEM  , TypeCode.ENCODED_ARRAY_ITEM  , TypeCode.CLASS_DATA_ITEM  , TypeCode.MAP_LIST};
 ```
 
 This is for dexmerge type order and includes links to the code that I looked at to help me understand why it's different than dx ordering:
 
-```java// Merge type order derived from:// http://osxr.org/android/source/dalvik/dx/src/com/android/dx/merge/DexMerger.java#0111// typeIds sort is from:// http://osxr.org/android/source/dalvik/dx/src/com/android/dx/merge/DexMerger.java#0904private static final TypeCode[] DEXMERGE_TYPE_ORDER = new TypeCode[] {  TypeCode.HEADER_ITEM  , TypeCode.STRING_ID_ITEM  , TypeCode.TYPE_ID_ITEM  , TypeCode.PROTO_ID_ITEM  , TypeCode.FIELD_ID_ITEM  , TypeCode.METHOD_ID_ITEM  , TypeCode.CLASS_DEF_ITEM  , TypeCode.MAP_LIST  , TypeCode.TYPE_LIST  , TypeCode.ANNOTATION_SET_REF_LIST  , TypeCode.ANNOTATION_SET_ITEM  , TypeCode.CLASS_DATA_ITEM  , TypeCode.CODE_ITEM  , TypeCode.STRING_DATA_ITEM  , TypeCode.DEBUG_INFO_ITEM  , TypeCode.ANNOTATION_ITEM  , TypeCode.ENCODED_ARRAY_ITEM  , TypeCode.ANNOTATIONS_DIRECTORY_ITEM};
+```// Merge type order derived from:// http://osxr.org/android/source/dalvik/dx/src/com/android/dx/merge/DexMerger.java#0111// typeIds sort is from:// http://osxr.org/android/source/dalvik/dx/src/com/android/dx/merge/DexMerger.java#0904private static final TypeCode[] DEXMERGE_TYPE_ORDER = new TypeCode[] {  TypeCode.HEADER_ITEM  , TypeCode.STRING_ID_ITEM  , TypeCode.TYPE_ID_ITEM  , TypeCode.PROTO_ID_ITEM  , TypeCode.FIELD_ID_ITEM  , TypeCode.METHOD_ID_ITEM  , TypeCode.CLASS_DEF_ITEM  , TypeCode.MAP_LIST  , TypeCode.TYPE_LIST  , TypeCode.ANNOTATION_SET_REF_LIST  , TypeCode.ANNOTATION_SET_ITEM  , TypeCode.CLASS_DATA_ITEM  , TypeCode.CODE_ITEM  , TypeCode.STRING_DATA_ITEM  , TypeCode.DEBUG_INFO_ITEM  , TypeCode.ANNOTATION_ITEM  , TypeCode.ENCODED_ARRAY_ITEM  , TypeCode.ANNOTATIONS_DIRECTORY_ITEM};
 ```
 
 In general, the format of a DEX file and the items inside are like this:
