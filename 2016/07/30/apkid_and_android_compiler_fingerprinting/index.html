@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>APKiD and Android Compiler Fingerprinting | RedNaga Security</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="We recently gave a presentation at HITCON 2016 called Android Compiler Fingerprinting where in we released a tool called: APKiD. It’s basically PEiD for Android – it detects several compilers, obfusca">
+<meta property="og:type" content="article">
+<meta property="og:title" content="APKiD and Android Compiler Fingerprinting">
+<meta property="og:url" content="https://rednaga.github.io/2016/07/30/apkid_and_android_compiler_fingerprinting/index.html">
+<meta property="og:site_name" content="RedNaga Security">
+<meta property="og:description" content="We recently gave a presentation at HITCON 2016 called Android Compiler Fingerprinting where in we released a tool called: APKiD. It’s basically PEiD for Android – it detects several compilers, obfusca">
+<meta property="og:updated_time" content="2016-08-01T06:26:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="APKiD and Android Compiler Fingerprinting">
+<meta name="twitter:description" content="We recently gave a presentation at HITCON 2016 called Android Compiler Fingerprinting where in we released a tool called: APKiD. It’s basically PEiD for Android – it detects several compilers, obfusca">
+<meta name="twitter:creator" content="@RedNagaSec">
+  
+    <link rel="alternative" href="/rss2.xml" title="RedNaga Security" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">RedNaga Security</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">spicy security research</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/rss2.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rednaga.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-apkid_and_android_compiler_fingerprinting" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/30/apkid_and_android_compiler_fingerprinting/" class="article-date">
+  <time datetime="2016-07-30T07:00:00.000Z" itemprop="datePublished">2016-07-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      APKiD and Android Compiler Fingerprinting
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>We recently gave a presentation at <a href="http://hitcon.org/2016/CMT/" target="_blank" rel="external">HITCON 2016</a> called <a href="http://hitcon.org/2016/CMT/slide/day1-r0-e-1.pdf" target="_blank" rel="external">Android Compiler Fingerprinting</a><br> where in we released a tool called: <a href="https://github.com/rednaga/APKiD" target="_blank" rel="external">APKiD</a>. It’s basically PEiD for Android – it detects several compilers, obfuscators, and packers and we’re adding to it whenever we find new stuff. You’re welcome to submit your rules also.</p>
+<p>Here’s the full abstract:</p>
+<blockquote>
+<p>Compiler fingerprinting is a technique for identifying the compiler used to create a binary. This is because there is some flexibility in file formats, and different compilers usually produce binaries with identical behaviors but with subtle differences in structure and organization. We developed a tool which can determine the compiler used to create Dalvik executables and Android binary XML files. This allowed us to distinguish between apps compiled from original source code and apps which had been modified using non-standard compilers such as dexlib. Our hypothesis was that the two primary reasons reasons for modifying an Android app were for 1.) cracking and piracy and 2.) injecting malicious code. We tested this assumption by comparing the compiler profiles of various app markets with varying tolerances for cracked and malicious apps to see if the percentage of modified apps was inversely proportional to how strict the store was about policing submissions. We found that strict markets such as Google Play and Amazon had significantly lower rates of modified apps compared to less strict markets such as Aptoide and BlapkMarket. Additionally, we analyzed ~138,000 benign apps and known malware samples to compare the rates of modification between both groups. We found much higher rates of modification within the malware sample set with many malware families consisting entirely of modified apps.</p>
+<p>This talk presents the history and evolution of various Android tools, introduces tools for fingerprinting compilers, summarizes the technical details for how the tools work, and reviews applications for using compiler fingerprinting to improve detection and classification of malware and pirated apps.</p>
+</blockquote>
+<p>We’ll post the video of our talk as soon as it’s available!</p>
+<a id="more"></a>
+<p>This is the output when it’s run against our test files:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div></pre></td><td class="code"><pre><div class="line">$ apkid test-data</div><div class="line">[!] APKiD 0.9.3 :: from RedNaga :: rednaga.io</div><div class="line">[*] test-data/apk/dexguard1.apk!classes.dex</div><div class="line"> |-&gt; compiler : dexlib 1.x</div><div class="line"> |-&gt; obfuscator : DexGuard</div><div class="line">[*] test-data/apk/dexguard2.apk!classes.dex</div><div class="line"> |-&gt; anti_disassembly : illegal class name</div><div class="line"> |-&gt; compiler : dexlib 1.x</div><div class="line"> |-&gt; obfuscator : DexGuard</div><div class="line">[*] test-data/apk/dexguard_6_1.apk!classes.dex</div><div class="line"> |-&gt; anti_disassembly : illegal class name</div><div class="line"> |-&gt; compiler : dexlib 1.x</div><div class="line"> |-&gt; obfuscator : DexGuard</div><div class="line">[*] test-data/apk/pikekapril.apk!classes.dex</div><div class="line"> |-&gt; compiler : dexlib 1.x</div><div class="line"> |-&gt; obfuscator : Bitwise AntiSkid</div><div class="line">[*] test-data/dex/big-endian.dex</div><div class="line"> |-&gt; abnormal : non little-endian format</div><div class="line"> |-&gt; compiler : Android SDK (dx)</div><div class="line">[*] test-data/dex/dexguard1.dex</div><div class="line"> |-&gt; compiler : dexlib 1.x</div><div class="line"> |-&gt; obfuscator : DexGuard</div><div class="line">[*] test-data/dex/dexguard2.dex</div><div class="line"> |-&gt; anti_disassembly : illegal class name</div><div class="line"> |-&gt; compiler : dexlib 1.x</div><div class="line"> |-&gt; obfuscator : DexGuard</div><div class="line">[*] test-data/dex/dexguard3.dex</div><div class="line"> |-&gt; anti_disassembly : illegal class name</div><div class="line"> |-&gt; compiler : dexlib 1.x</div><div class="line"> |-&gt; obfuscator : DexGuard</div><div class="line">[*] test-data/dex/dexlib1.dex</div><div class="line"> |-&gt; compiler : dexlib 1.x</div><div class="line">[*] test-data/dex/dexlib2.dex</div><div class="line"> |-&gt; compiler : dexlib 2.x</div><div class="line">[*] test-data/dex/dexmerge.dex</div><div class="line"> |-&gt; compiler : Android SDK (dexmerge)</div><div class="line">[*] test-data/dex/dexprotector1.dex</div><div class="line"> |-&gt; compiler : dexlib 1.x</div><div class="line"> |-&gt; obfuscator : DexProtect</div><div class="line">[*] test-data/dex/dexprotector2.dex</div><div class="line"> |-&gt; compiler : dexlib 1.x</div><div class="line"> |-&gt; obfuscator : DexProtect</div><div class="line">[*] test-data/dex/dexprotector3.dex</div><div class="line"> |-&gt; compiler : dexlib 1.x</div><div class="line"> |-&gt; obfuscator : DexProtect</div><div class="line">[*] test-data/dex/dx.dex</div><div class="line"> |-&gt; compiler : Android SDK (dx)</div><div class="line">[*] test-data/dex/non-standard-header.dex</div><div class="line"> |-&gt; abnormal : non-standard header size</div><div class="line"> |-&gt; compiler : Android SDK (dx)</div><div class="line">[*] test-data/dex/non_zero_link_offset.dex</div><div class="line"> |-&gt; abnormal, anti_disassembly : non-zero link offset</div><div class="line"> |-&gt; compiler : Android SDK (dx)</div><div class="line">[*] test-data/dex/non_zero_link_size.dex</div><div class="line"> |-&gt; abnormal, anti_disassembly : non-zero link size</div><div class="line"> |-&gt; compiler : Android SDK (dx)</div><div class="line">[*] test-data/samples/alibaba/apk/071d9e73a1badf763bc6bb843c51c208ad17c91b24192e79f045ed1e4fc8148a</div><div class="line"> |-&gt; packer : Alibaba</div><div class="line">[*] test-data/samples/apkprotect/9ac20091b8e82c8ff2882422450e30c03043136ca009affe59e51edabf753337</div><div class="line"> |-&gt; packer : APKProtect</div><div class="line">[*] test-data/samples/apkprotect/9ac20091b8e82c8ff2882422450e30c03043136ca009affe59e51edabf753337!classes.dex</div><div class="line"> |-&gt; compiler : dexlib 1.x</div><div class="line">[*] test-data/samples/apkprotect/9ac20091b8e82c8ff2882422450e30c03043136ca009affe59e51edabf753337!res/raw/ister2015050620.apk</div><div class="line"> |-&gt; packer : Bangcle</div><div class="line">[*] test-data/samples/baidu/ae369707b32a37f2b5c78f27418f90c54c7f84d5fd8f96a9e1595e27182b3173</div><div class="line"> |-&gt; packer : Baidu</div><div class="line">[*] test-data/samples/baidu/ae369707b32a37f2b5c78f27418f90c54c7f84d5fd8f96a9e1595e27182b3173!classes.dex</div><div class="line"> |-&gt; compiler : Android SDK (dx)</div><div class="line">[*] test-data/samples/bangcle/a1f851511e9ca191a97a295f7edb9bb44694b413</div><div class="line"> |-&gt; packer : Bangcle</div><div class="line">[*] test-data/samples/bangcle/a1f851511e9ca191a97a295f7edb9bb44694b413!classes.dex</div><div class="line"> |-&gt; compiler : dexlib 2.x</div><div class="line">[*] test-data/samples/bangcle/a1f851511e9ca191a97a295f7edb9bb44694b413!assets/com.mobi.screensaver.kansiphone3</div><div class="line"> |-&gt; packer : Bangcle/SecNeo (UPX)</div><div class="line">[*] test-data/samples/bangcle/elf/bf286487b7bbd549b8cdb00dc9a80a5404ed68103ff0fffd94a85907db9c439d</div><div class="line"> |-&gt; packer : newer-style Bangcle/SecNeo (UPX)</div><div class="line">[*] test-data/samples/ijiami/6d19105bedeebad4140e9b212baae4063cbd01f3</div><div class="line"> |-&gt; packer : Ijiami</div><div class="line">[*] test-data/samples/ijiami/6d19105bedeebad4140e9b212baae4063cbd01f3!classes.dex</div><div class="line"> |-&gt; compiler : dexlib 1.x</div><div class="line">[*] test-data/samples/ijiami/6d19105bedeebad4140e9b212baae4063cbd01f3!assets/ijm_lib/armeabi/libexec.so</div><div class="line"> |-&gt; packer : Ijiami (UPX)</div><div class="line">[*] test-data/samples/jiangu/f8493d91c4250cff4d4f9a47538a2b0b39f7c4d87e6fe4035d4c304c70b5ad1c</div><div class="line"> |-&gt; packer : Jiangu</div><div class="line">[*] test-data/samples/jiangu/f8493d91c4250cff4d4f9a47538a2b0b39f7c4d87e6fe4035d4c304c70b5ad1c!classes.dex</div><div class="line"> |-&gt; compiler : dexlib 2.x</div><div class="line">[*] test-data/samples/kiro/061af556e934fec5fdcbec732bc7128cbf5a45012310fc8ee2f39e26bd81e982</div><div class="line"> |-&gt; packer : Kiro</div><div class="line">[*] test-data/samples/kiro/061af556e934fec5fdcbec732bc7128cbf5a45012310fc8ee2f39e26bd81e982!classes.dex</div><div class="line"> |-&gt; compiler : dexlib 2.x</div><div class="line">[*] test-data/samples/level/c2d3ceea0dda80e80d7def8e9ea127b9a633208ffcb106c5db3674e1c58baac4</div><div class="line"> |-&gt; packer : &apos;qdbh&apos; (?)</div><div class="line">[*] test-data/samples/liapp/b5be20d225edf55634621aa17988a6ed3368d4f7632c8a1eb4d3fc3b6a61c325</div><div class="line"> |-&gt; packer : LIAPP</div><div class="line">[*] test-data/samples/liapp/b5be20d225edf55634621aa17988a6ed3368d4f7632c8a1eb4d3fc3b6a61c325!classes.dex</div><div class="line"> |-&gt; compiler : dexlib 2.x</div><div class="line">[*] test-data/samples/medusa/b92c0090038f3185908f2fb3b7e927da734040b9332332fc09542e20c615e083</div><div class="line"> |-&gt; packer : Medusa</div><div class="line">[*] test-data/samples/medusa/b92c0090038f3185908f2fb3b7e927da734040b9332332fc09542e20c615e083!classes.dex</div><div class="line"> |-&gt; compiler : dexlib 1.x</div><div class="line">[*] test-data/samples/naga/89297d34ee79adf8390a173aefd31e65c47e18c7dfc0a3f1508ca2255991efb2</div><div class="line"> |-&gt; packer : Naga</div><div class="line">[*] test-data/samples/naga/89297d34ee79adf8390a173aefd31e65c47e18c7dfc0a3f1508ca2255991efb2!classes.dex</div><div class="line"> |-&gt; compiler : Android SDK (dx)</div><div class="line">[*] test-data/samples/nqshield/997a3986cc8437772b569d0319044764a1cbac9d296af01d77c857b887c49b48</div><div class="line"> |-&gt; packer : NQ Shield</div><div class="line">[*] test-data/samples/nqshield/997a3986cc8437772b569d0319044764a1cbac9d296af01d77c857b887c49b48!classes.dex</div><div class="line"> |-&gt; compiler : dexlib 1.x</div><div class="line">[*] test-data/samples/qihoo360/66126fb7d5977cf8dbac401330f25d06a9101680874ae43eb6bd201f2b92c727</div><div class="line"> |-&gt; packer : Qihoo 360, Tencent</div><div class="line">[*] test-data/samples/qihoo360/66126fb7d5977cf8dbac401330f25d06a9101680874ae43eb6bd201f2b92c727!classes.dex</div><div class="line"> |-&gt; compiler : dexlib 1.x</div><div class="line">[*] test-data/samples/rootkit/5ddda7355599a1819e03ee881e56453f492f6cf03674347513bf26f83b81a415</div><div class="line"> |-&gt; packer : UPX (unknown, unmodified)</div><div class="line">[*] test-data/samples/tencent/66126fb7d5977cf8dbac401330f25d06a9101680874ae43eb6bd201f2b92c727</div><div class="line"> |-&gt; packer : Qihoo 360, Tencent</div><div class="line">[*] test-data/samples/tencent/66126fb7d5977cf8dbac401330f25d06a9101680874ae43eb6bd201f2b92c727!classes.dex</div><div class="line"> |-&gt; compiler : dexlib 1.x</div><div class="line">[*] test-data/samples/unicom_sdk/bb11a710258077213ce4281e78a1c19a940c02dc3ddaa5f1d8046380173e0da7</div><div class="line"> |-&gt; packer : Unicom SDK Loader</div><div class="line">[*] test-data/samples/unicom_sdk/bb11a710258077213ce4281e78a1c19a940c02dc3ddaa5f1d8046380173e0da7!classes.dex</div><div class="line"> |-&gt; compiler : Android SDK (dexmerge), dexlib 1.x</div></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rednaga.github.io/2016/07/30/apkid_and_android_compiler_fingerprinting/" data-id="cirbnpa7v00029vaojtv7h68e" class="article-share-link">Share</a>
+      
+        <a href="https://rednaga.github.io/2016/07/30/apkid_and_android_compiler_fingerprinting/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/apkid/">apkid</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/research/">research</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/07/31/detecting_pirated_and_malicious_android_apps_with_apkid/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Detecting Pirated and Malicious Android Apps with APKiD
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/07/19/welcome/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Welcome to RedNaga</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/apkid/">apkid</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/research/">research</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/apkid/" style="font-size: 10px;">apkid</a> <a href="/tags/research/" style="font-size: 10px;">research</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/07/31/detecting_pirated_and_malicious_android_apps_with_apkid/">Detecting Pirated and Malicious Android Apps with APKiD</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/30/apkid_and_android_compiler_fingerprinting/">APKiD and Android Compiler Fingerprinting</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/19/welcome/">Welcome to RedNaga</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 RedNaga<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'rednaga';
+  
+  var disqus_url = 'https://rednaga.github.io/2016/07/30/apkid_and_android_compiler_fingerprinting/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
