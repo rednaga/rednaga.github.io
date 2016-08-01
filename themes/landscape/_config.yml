@@ -18,7 +18,7 @@ widgets:
 - recent_posts
 
 # Miscellaneous
-google_analytics:
+google_analytics: UA-81741124-1
 favicon: /favicon.ico
 twitter: RedNagaSec
 google_plus:
