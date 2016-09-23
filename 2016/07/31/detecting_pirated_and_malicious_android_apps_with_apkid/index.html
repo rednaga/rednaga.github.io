@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Detecting Pirated and Malicious Android Apps with APKiD | RedNaga Security</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Android apps are much easier to modify than those of traditional desktop operating systems like Windows or Linux, and there’s primarily only one way to modify Android apps after they have been compile">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Detecting Pirated and Malicious Android Apps with APKiD">
+<meta property="og:url" content="https://rednaga.github.io/2016/07/31/detecting_pirated_and_malicious_android_apps_with_apkid/index.html">
+<meta property="og:site_name" content="RedNaga Security">
+<meta property="og:description" content="Android apps are much easier to modify than those of traditional desktop operating systems like Windows or Linux, and there’s primarily only one way to modify Android apps after they have been compile">
+<meta property="og:image" content="https://rednaga.github.io/images/detecting_pirated_and_malicious_android_apps_with_apkid/abnormal_type_order.png">
+<meta property="og:image" content="https://rednaga.github.io/images/detecting_pirated_and_malicious_android_apps_with_apkid/abnormal_string_sort.png">
+<meta property="og:image" content="https://rednaga.github.io/images/detecting_pirated_and_malicious_android_apps_with_apkid/abnormal_class_interfaces.png">
+<meta property="og:updated_time" content="2016-08-01T06:06:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Detecting Pirated and Malicious Android Apps with APKiD">
+<meta name="twitter:description" content="Android apps are much easier to modify than those of traditional desktop operating systems like Windows or Linux, and there’s primarily only one way to modify Android apps after they have been compile">
+<meta name="twitter:image" content="https://rednaga.github.io/images/detecting_pirated_and_malicious_android_apps_with_apkid/abnormal_type_order.png">
+<meta name="twitter:creator" content="@RedNagaSec">
+  
+    <link rel="alternative" href="/rss2.xml" title="RedNaga Security" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-81741124-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">RedNaga Security</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">spicy security research</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/rss2.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rednaga.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-detecting_pirated_and_malicious_android_apps_with_apkid" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/31/detecting_pirated_and_malicious_android_apps_with_apkid/" class="article-date">
+  <time datetime="2016-07-31T07:00:00.000Z" itemprop="datePublished">2016-07-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Detecting Pirated and Malicious Android Apps with APKiD
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Android apps are much easier to modify than those of traditional desktop operating systems like Windows or Linux, and there’s primarily only <em>one</em> way to modify Android apps after they have been compiled from source: <a href="https://mvnrepository.com/artifact/org.smali/dexlib2" target="_blank" rel="external">dexlib</a>. Even if you’re actually using <a href="https://ibotpeaches.github.io/Apktool/" target="_blank" rel="external">Apktool</a> or <a href="https://github.com/JesusFreke/smali" target="_blank" rel="external">Smali</a>, they are both using dexlib under the hood. Actually, Apktool uses Smali, and Smali and dexlib are part of the same project.</p>
+<p>Why is this important? Any app which has had malware injected into it or has been cracked or pirated will have <em>probably</em> been disassembled and recompiled by dexlib. Also, there are very few reasons why a developer with access to the source code would use dexlib. Therefore, you know an app has been modified by dexlib, it’s probably interesting to you if you’re worried about malware or app piracy. This is where <a href="https://github.com/rednaga/APKiD" target="_blank" rel="external">APKiD</a> comes in. In addition to detecting packers, obfuscators, and other weird stuff, it can also identify if an app was compiled by the standard Android compilers or dexlib.<br><a id="more"></a></p>
+<h1 id="APKiD"><a href="#APKiD" class="headerlink" title="APKiD"></a>APKiD</h1><p>APKiD can look at an Android APK or DEX file and detect the fingerprints of several different compilers:</p>
+<ul>
+<li>dx - standard Android SDK compiler</li>
+<li>dexmerge - used for incremental builds by some IDEs (after using dx)</li>
+<li>dexlib 1.x</li>
+<li>dexlib 2.x beta</li>
+<li>dexlib 2.x</li>
+</ul>
+<p>If any of the dexlib families have been used to create a DEX file, you can be fairly suspicious it has been cracked and it may have been injected with malware. For more info on how we used compiler fingerprinting to detect malware and cracks, check out our talk <a href="/2016/07/30/apkid_and_android_compiler_fingerprinting/">Android Compiler Fingerprinting</a>.</p>
+<h2 id="Detecting-dx-and-dexmerge"><a href="#Detecting-dx-and-dexmerge" class="headerlink" title="Detecting dx and dexmerge"></a>Detecting dx and dexmerge</h2><p>The main way dx and dexmerge are identified are by looking at the ordering of the map types in the DEX file.</p>
+<p><img src="/images/detecting_pirated_and_malicious_android_apps_with_apkid/abnormal_type_order.png" alt=""></p>
+<p>This is a good place to identify different compilers because the order is not defined in the spec so it’s up to the compiler how it wants to order these things.</p>
+<p>In order to have something that’s copy / paste-able, here’s some Java code for the normal type order:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> TypeCode[] NORMAL_TYPE_ORDER = <span class="keyword">new</span> TypeCode[] &#123;</div><div class="line">  TypeCode.HEADER_ITEM,</div><div class="line">  TypeCode.STRING_ID_ITEM,</div><div class="line">  TypeCode.TYPE_ID_ITEM,</div><div class="line">  TypeCode.PROTO_ID_ITEM,</div><div class="line">  TypeCode.FIELD_ID_ITEM,</div><div class="line">  TypeCode.METHOD_ID_ITEM,</div><div class="line">  TypeCode.CLASS_DEF_ITEM,</div><div class="line">  TypeCode.ANNOTATION_SET_REF_LIST,</div><div class="line">  TypeCode.ANNOTATION_SET_ITEM,</div><div class="line">  TypeCode.CODE_ITEM,</div><div class="line">  TypeCode.ANNOTATIONS_DIRECTORY_ITEM,</div><div class="line">  TypeCode.TYPE_LIST,</div><div class="line">  TypeCode.STRING_DATA_ITEM,</div><div class="line">  TypeCode.DEBUG_INFO_ITEM,</div><div class="line">  TypeCode.ANNOTATION_ITEM,</div><div class="line">  TypeCode.ENCODED_ARRAY_ITEM,</div><div class="line">  TypeCode.CLASS_DATA_ITEM,</div><div class="line">  TypeCode.MAP_LIST</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>The dexmerge type order was derived by looking at <a href="http://osxr.org/android/source/dalvik/dx/src/com/android/dx/merge/DexMerger.java#0111" target="_blank" rel="external">DexMerger.java</a>. I got the typeIds order by looking <a href="http://osxr.org/android/source/dalvik/dx/src/com/android/dx/merge/DexMerger.java#0904" target="_blank" rel="external">here</a>.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> TypeCode[] DEXMERGE_TYPE_ORDER = <span class="keyword">new</span> TypeCode[] &#123;</div><div class="line">  TypeCode.HEADER_ITEM,</div><div class="line">  TypeCode.STRING_ID_ITEM,</div><div class="line">  TypeCode.TYPE_ID_ITEM,</div><div class="line">  TypeCode.PROTO_ID_ITEM,</div><div class="line">  TypeCode.FIELD_ID_ITEM,</div><div class="line">  TypeCode.METHOD_ID_ITEM,</div><div class="line">  TypeCode.CLASS_DEF_ITEM,</div><div class="line">  TypeCode.MAP_LIST,</div><div class="line">  TypeCode.TYPE_LIST,</div><div class="line">  TypeCode.ANNOTATION_SET_REF_LIST,</div><div class="line">  TypeCode.ANNOTATION_SET_ITEM,</div><div class="line">  TypeCode.CLASS_DATA_ITEM,</div><div class="line">  TypeCode.CODE_ITEM,</div><div class="line">  TypeCode.STRING_DATA_ITEM,</div><div class="line">  TypeCode.DEBUG_INFO_ITEM,</div><div class="line">  TypeCode.ANNOTATION_ITEM,</div><div class="line">  TypeCode.ENCODED_ARRAY_ITEM,</div><div class="line">  TypeCode.ANNOTATIONS_DIRECTORY_ITEM</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>In general, the format of a DEX file and the items inside are like this:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">header</div><div class="line">  HEADER_ITEM</div><div class="line">stringIds</div><div class="line">  STRING_ID_ITEM</div><div class="line">typeIds</div><div class="line">  TYPE_ID_ITEM</div><div class="line">protoIds</div><div class="line">  PROTO_ID_ITEM</div><div class="line">fieldIds</div><div class="line">  FIELD_ID_ITEM</div><div class="line">methodIds</div><div class="line">  METHOD_ID_ITEM</div><div class="line">classDefs</div><div class="line">  CLASS_DEF_ITEM</div><div class="line">wordData (sort by TYPE)</div><div class="line">  ANNOTATION_SET_REF_LIST</div><div class="line">  ANNOTATION_SET_ITEM</div><div class="line">  CODE_ITEM</div><div class="line">  ANNOTATIONS_DIRECTORY_ITEM</div><div class="line">typeLists (no sort)</div><div class="line">  TYPE_LIST</div><div class="line">stringData (sort by INSTANCE)</div><div class="line">  STRING_DATA_ITEM</div><div class="line">byteData (sort by TYPE)</div><div class="line">  DEBUG_INFO_ITEM</div><div class="line">  ANNOTATION_ITEM</div><div class="line">  ENCODED_ARRAY_ITEM</div><div class="line">classData (no sort)</div><div class="line">  CLASS_DATA_ITEM</div><div class="line">map (no sort)</div><div class="line">  MAP_LIST</div></pre></td></tr></table></figure>
+<p>This list may be handy for ongoing research into fingerprinting different compilers.</p>
+<h2 id="Detecting-dexlib-1-x"><a href="#Detecting-dexlib-1-x" class="headerlink" title="Detecting dexlib 1.x"></a>Detecting dexlib 1.x</h2><p>This is the first library that allowed disassembling and compiling of DEX files without the source code. It was created by Ben “Jesus Freke” Gruver. It’s detected primarily by looking at the physical sorting of the strings.</p>
+<p><img src="/images/detecting_pirated_and_malicious_android_apps_with_apkid/abnormal_string_sort.png" alt=""></p>
+<p>The DEX format requires that the string table, which list all the strings and their offset into the file, must be sorted alphabetically, but the actual physical ordering of the strings in the file are not necessarily sorted. So while dx sorts strings alphabetically, even though it doesn’t have to, dexlib seems to sort them physically based on when they’re encountered during compilation.</p>
+<p>A lot of commercial packers and obfuscators and certain malware families still use dexlib 1.x under the hood because it’s pretty solid and they’re too lazy to update.</p>
+<h2 id="Detecting-dexlib-2-x-beta"><a href="#Detecting-dexlib-2-x-beta" class="headerlink" title="Detecting dexlib 2.x beta"></a>Detecting dexlib 2.x beta</h2><p>Dexlib 1.x was rewritten into dexlib 2, and while it was in a beta release, we noticed that it did something weird with how it marked class interfaces.</p>
+<p><img src="/images/detecting_pirated_and_malicious_android_apps_with_apkid/abnormal_class_interfaces.png" alt=""></p>
+<p>You can see <code>AC 27 00 00</code> all over the file. That’s the offset to the “null” interface for classes which don’t implement any interface. It’s a good example of how flexible the DEX format is, because I would figure this wouldn’t run at all, but it does. The dx compiler just uses <code>00</code>s to indicate that there’s no interface.</p>
+<p>This was removed before dexlib 2.x was moved out of beta.</p>
+<h2 id="Detecting-dexlib-2-x"><a href="#Detecting-dexlib-2-x" class="headerlink" title="Detecting dexlib 2.x"></a>Detecting dexlib 2.x</h2><p>This compiler is also detected by also looking at the map type order. Assembling a DEX file is complex and there are a lot of tiny little details you need to mimic to create an absolutely perfect facsimile. That’s a lot of extra work most developers don’t want to do.</p>
+<p>As an aside, I spend a lot of time using this library and looking at it’s code while working on a generic Android deobfuscator called <a href="https://travis-ci.org/CalebFenton/simplify" target="_blank" rel="external">Simplify</a>. And I’ve got to say, it’s some really impressive and <em>clean</em> code that I’ve learned a lot from. Kudos to <a href="https://github.com/JesusFreke" target="_blank" rel="external">Ben</a>.</p>
+<h1 id="Using-APKiD"><a href="#Using-APKiD" class="headerlink" title="Using APKiD"></a>Using APKiD</h1><p>The usage of APKiD is quite simple. You just point it at folders, files, whatever, and it’ll try and find APKs and DEX files. It’ll also decompose APKs and try and find compressed APKs, DEX, and ELF files. Here’s output of an example run:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">$ apkid test-data/apk test-data/dex</div><div class="line">[!] APKiD 0.9.3 :: from RedNaga :: rednaga.io</div><div class="line">[*] test-data/dex/dexguard1.dex</div><div class="line"> |-&gt; compiler : dexlib 1.x</div><div class="line"> |-&gt; obfuscator : DexGuard</div><div class="line">[*] test-data/dex/dexguard2.dex</div><div class="line"> |-&gt; anti_disassembly : illegal class name</div><div class="line"> |-&gt; compiler : dexlib 1.x</div><div class="line"> |-&gt; obfuscator : DexGuard</div><div class="line">[*] test-data/dex/dexguard3.dex</div><div class="line"> |-&gt; anti_disassembly : illegal class name</div><div class="line"> |-&gt; compiler : dexlib 1.x</div><div class="line"> |-&gt; obfuscator : DexGuard</div><div class="line">[*] test-data/dex/dexlib1.dex</div><div class="line"> |-&gt; compiler : dexlib 1.x</div><div class="line">[*] test-data/dex/dexlib2.dex</div><div class="line"> |-&gt; compiler : dexlib 2.x</div><div class="line">[*] test-data/dex/dexmerge.dex</div><div class="line"> |-&gt; compiler : Android SDK (dexmerge)</div><div class="line">[*] test-data/dex/dexprotector1.dex</div><div class="line"> |-&gt; compiler : dexlib 1.x</div><div class="line"> |-&gt; obfuscator : DexProtect</div><div class="line">[*] test-data/dex/dexprotector2.dex</div><div class="line"> |-&gt; compiler : dexlib 1.x</div><div class="line"> |-&gt; obfuscator : DexProtect</div><div class="line">[*] test-data/dex/dexprotector3.dex</div><div class="line"> |-&gt; compiler : dexlib 1.x</div><div class="line"> |-&gt; obfuscator : DexProtect</div><div class="line">[*] test-data/dex/dx.dex</div><div class="line"> |-&gt; compiler : Android SDK (dx)</div></pre></td></tr></table></figure>
+<p>You can see that the test samples of DexGuard and DexProtector both use dexlib 1.x. APKiD also supports JSON output so it’s easier to integrate into other toolchains:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"test-data/dex/dexprotector1.dex"</span>: &#123;</div><div class="line">    <span class="attr">"obfuscator"</span>: [</div><div class="line">      <span class="string">"DexProtect"</span></div><div class="line">    ],</div><div class="line">    <span class="attr">"compiler"</span>: [</div><div class="line">      <span class="string">"dexlib 1.x"</span></div><div class="line">    ]</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">"test-data/dex/dexlib1.dex"</span>: &#123;</div><div class="line">    <span class="attr">"compiler"</span>: [</div><div class="line">      <span class="string">"dexlib 1.x"</span></div><div class="line">    ]</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">"test-data/dex/dexguard3.dex"</span>: &#123;</div><div class="line">    <span class="attr">"obfuscator"</span>: [</div><div class="line">      <span class="string">"DexGuard"</span></div><div class="line">    ],</div><div class="line">    <span class="attr">"anti_disassembly"</span>: [</div><div class="line">      <span class="string">"illegal class name"</span></div><div class="line">    ],</div><div class="line">    <span class="attr">"compiler"</span>: [</div><div class="line">      <span class="string">"dexlib 1.x"</span></div><div class="line">    ]</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">"test-data/dex/dexlib2.dex"</span>: &#123;</div><div class="line">    <span class="attr">"compiler"</span>: [</div><div class="line">      <span class="string">"dexlib 2.x"</span></div><div class="line">    ]</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">"test-data/dex/dexguard1.dex"</span>: &#123;</div><div class="line">    <span class="attr">"obfuscator"</span>: [</div><div class="line">      <span class="string">"DexGuard"</span></div><div class="line">    ],</div><div class="line">    <span class="attr">"compiler"</span>: [</div><div class="line">      <span class="string">"dexlib 1.x"</span></div><div class="line">    ]</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">"test-data/dex/dexmerge.dex"</span>: &#123;</div><div class="line">    <span class="attr">"compiler"</span>: [</div><div class="line">      <span class="string">"Android SDK (dexmerge)"</span></div><div class="line">    ]</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">"test-data/dex/dx.dex"</span>: &#123;</div><div class="line">    <span class="attr">"compiler"</span>: [</div><div class="line">      <span class="string">"Android SDK (dx)"</span></div><div class="line">    ]</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">"test-data/dex/dexguard2.dex"</span>: &#123;</div><div class="line">    <span class="attr">"obfuscator"</span>: [</div><div class="line">      <span class="string">"DexGuard"</span></div><div class="line">    ],</div><div class="line">    <span class="attr">"anti_disassembly"</span>: [</div><div class="line">      <span class="string">"illegal class name"</span></div><div class="line">    ],</div><div class="line">    <span class="attr">"compiler"</span>: [</div><div class="line">      <span class="string">"dexlib 1.x"</span></div><div class="line">    ]</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">"test-data/dex/dexprotector2.dex"</span>: &#123;</div><div class="line">    <span class="attr">"obfuscator"</span>: [</div><div class="line">      <span class="string">"DexProtect"</span></div><div class="line">    ],</div><div class="line">    <span class="attr">"compiler"</span>: [</div><div class="line">      <span class="string">"dexlib 1.x"</span></div><div class="line">    ]</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Ideas-for-the-Future"><a href="#Ideas-for-the-Future" class="headerlink" title="Ideas for the Future"></a>Ideas for the Future</h2><p>This post leaves out all of the Android XML fingerprinting details <a href="https://github.com/strazzere" target="_blank" rel="external">Tim</a> researched that can identify tools like Apktool. We still need to add these fingerprints into APKiD.</p>
+<p>There is also a library called ASMDEX which looks capable of creating DEX files. At the time of this original research a few years ago, I didn’t have time to look into it, and no one was talking about how to use it. A lot of the stuff was over my head, but I’ve since had a lot of practice using ASM to create Java class files, so I think I can manage now. It would be nice to add fingerprints for ASMDEX. Anything created by that would probably be pretty weird.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rednaga.github.io/2016/07/31/detecting_pirated_and_malicious_android_apps_with_apkid/" data-id="citgdtyvh000449vb156lwd7n" class="article-share-link">Share</a>
+      
+        <a href="https://rednaga.github.io/2016/07/31/detecting_pirated_and_malicious_android_apps_with_apkid/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/apkid/">apkid</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/research/">research</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/09/21/reversing_go_binaries_like_a_pro/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Reversing GO binaries like a pro
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/07/30/apkid_and_android_compiler_fingerprinting/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">APKiD and Android Compiler Fingerprinting</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/09/21/reversing_go_binaries_like_a_pro/">Reversing GO binaries like a pro</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/31/detecting_pirated_and_malicious_android_apps_with_apkid/">Detecting Pirated and Malicious Android Apps with APKiD</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/30/apkid_and_android_compiler_fingerprinting/">APKiD and Android Compiler Fingerprinting</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/19/welcome/">Welcome to RedNaga</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">Pages</h3>
+  <div class="widget pages">
+    <a href="/team-rednaga">Team RedNaga</a>
+  </div>
+</div>
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/apkid/">apkid</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/">golang</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ida-pro/">ida pro</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/research/">research</a><span class="tag-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/apkid/" style="font-size: 15px;">apkid</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/ida-pro/" style="font-size: 10px;">ida pro</a> <a href="/tags/research/" style="font-size: 20px;">research</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+  
+    <div id="twitter-feed" class="widget-wrap">
+  <h3 class="widget-title">Twitter Feed</h3>
+  <div class="widget">
+    <a class="twitter-timeline" href="https://twitter.com/RedNagaSec">Tweets by RedNagaSec</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+  </div>
+</div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 RedNaga<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'rednaga';
+  
+  var disqus_url = 'https://rednaga.github.io/2016/07/31/detecting_pirated_and_malicious_android_apps_with_apkid/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
