@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Remote Kext Debugging (No, really - it worked!) | RedNaga Security</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="This gif perfectly describe me attempting to connect debuggers to a kext using all the “simple” instructions on the internet.
+Recently I had far too much time on my hands and a Kext binary which seeme">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Remote Kext Debugging (No, really - it worked!)">
+<meta property="og:url" content="https://rednaga.github.io/2017/04/09/remote_kext_debugging/index.html">
+<meta property="og:site_name" content="RedNaga Security">
+<meta property="og:description" content="This gif perfectly describe me attempting to connect debuggers to a kext using all the “simple” instructions on the internet.
+Recently I had far too much time on my hands and a Kext binary which seeme">
+<meta property="og:image" content="https://rednaga.github.io/images/remote_kext_debugging/drinking.gif">
+<meta property="og:updated_time" content="2017-04-09T21:48:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Remote Kext Debugging (No, really - it worked!)">
+<meta name="twitter:description" content="This gif perfectly describe me attempting to connect debuggers to a kext using all the “simple” instructions on the internet.
+Recently I had far too much time on my hands and a Kext binary which seeme">
+<meta name="twitter:image" content="https://rednaga.github.io/images/remote_kext_debugging/drinking.gif">
+<meta name="twitter:creator" content="@RedNagaSec">
+  
+    <link rel="alternative" href="/rss2.xml" title="RedNaga Security" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-81741124-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">RedNaga Security</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">spicy security research</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/rss2.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rednaga.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-remote_kext_debugging" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/09/remote_kext_debugging/" class="article-date">
+  <time datetime="2017-04-09T07:00:00.000Z" itemprop="datePublished">2017-04-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Remote Kext Debugging (No, really - it worked!)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/images/remote_kext_debugging/drinking.gif" alt=""><br>This gif perfectly describe me attempting to connect debuggers to a kext using all the “simple” instructions on the internet.</p>
+<p>Recently I had far too much time on my hands and a Kext binary which seemed to pique my interest. After spending a bit of time analyzing the binary in IDA Pro, I wanted to prove out some theories I had by debugging it. A while back I had set up MacOS to be running as a QEMU/KVM machine - though I no longer had access to the hardware that I set this up on. The purpose of the previous use case was to have lots of instances up (fuzzing) as opposed to in depth debugging, and I had never actually wondered about debugging the kernel. Anyhoo - I decided to revisit setting up a virtualized instance of MacOS and decided to go the VMWare Fusion route. I had a license on the computer I had in front of me, wanted to continually do snapshots, and just assumed it would be easy to get it working locally. Well, I was sort of right?</p>
+<p>The bulk of the VMWare fusion part was just following the <a href="https://kb.vmware.com/selfservice/microsites/search.do?language=en_US&amp;cmd=displayKC&amp;externalId=2129534" target="_blank" rel="external">knowledgebase article from VMWare</a> - there really isn’t any magic to do there.</p>
+<p>After getting the VM built and set up - all the sources I found online seem to point out you will need to disable SIP and get your host environment setup. Patrick Wardle <a href="https://objective-see.com/blog.html#blogEntry9" target="_blank" rel="external">documented this process</a> quite well over on his blog, though it didn’t “just work” for me - though I kept being stumped as to why. Honestly, I still have no idea what the issue was, though I’ve been able to implement a workaround for the time being.<br>To summarize the steps from Patrick’s page, we need to do the following;</p>
+<ul>
+<li>Disable SIP on the vm<br>Boot into Recovery Mode, open a terminal and type <code>csrutil disable</code>.<br>Reboot the VM</li>
+<li><p>Enable Debugging in the Guest environment<br>After the VM reboots, open a terminal and change the <code>boot-args</code> by doing the following;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo nvram boot-args=&quot;debug=0x141 pmuflags=1 -v</div></pre></td></tr></table></figure>
+<p>Reboot the VM</p>
+</li>
+</ul>
+<p>This is the first step that didn’t work out quite the way I had hoped. According to most sources online, setting <code>debug=0x141</code> should cause the system to prompt you with a <code>Waiting for remote debugger connection.</code> while booting up. However, this never occured for me. After Googling more and more, I couldn’t really find anyone who had mentioned this issue (which is the main motivation for writing this) - so I pushed on until I found a better explanation of the boot args. According to the <a href="https://developer.apple.com/library/content/documentation/Darwin/Conceptual/KernelProgramming/build/build.html#//apple_ref/doc/uid/TP30000905-CH221-BABDGEGF" target="_blank" rel="external">Apple Developer Documentation Page</a> by setting <code>0x141</code> - these are the correct flags for us to set. Since <code>0x141 = (DB_HALT | DB_ARP | DB_LOG_PI_SCREEN)</code>, however it would appear the <code>DB_HALT</code> option is non-functional at this point in time. If anyone knows the reasoning behind the, or if this is just a weird blunder on my part, feel  free to comment here or shoot me a message. I cannot seem to find any real reasoning behind this no longer working.</p>
+<p>The workaround for this, which I assume everyone doing kernel debugging is using at this point, is to use the <code>DB_NMI</code> flag, so the command we run to properly set up the <code>boot-args</code> will be;<br>   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo nvram boot-args=&quot;debug=0x144 pmuflags=1 -v&quot;</div></pre></td></tr></table></figure></p>
+<p>Then reboot the machine.<br>This allows us to have the debugger listen for <em>N</em>on-<em>M</em>asking <em>I</em>terrupts, which we can cause at any time. These can be create by pressing <code>Esc + Control + Option + Command</code> at the same time - if on a laptop where you  have turned on the “Use function keys as function keys” option, you’ll need to hold the <code>fn</code> key as well. This will overlay text on the top left of your screen indicating the IP address to connect too.</p>
+<ul>
+<li>On host, download and install Apple’s “Kernel Debug Kit” which is specific to the kernel<br>of the guest environment you want to debug.</li>
+<li>Start <code>lldb</code> on the host machine and point it at the kernel you just downloaded<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ lldb</div><div class="line">(lldb) target create /Library/Developer/KDKs/KDK_10.11.5_15F34.kdk/System/Library/Kernels/kernel.development</div><div class="line">(lldb) command script import &quot;/Library/Developer/KDKs/KDK_10.11.5_15F34.kdk/System/Library/Kernels/kernel.dSYM/Contents/Resources/DWARF/../Python/kernel.py</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>Now, if you have your guest properly set up and waiting for the debugger, you could now attach <code>lldb</code> directly to the ip address.<br>   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(lldb) kdp-remote 172.16.210.142</div></pre></td></tr></table></figure></p>
+<p>Voila! Well, sort of? It did work for a short time, approximately ~60 seconds or so. The debugger appears to attach fine, breakpoints would be set and hit. Though after the first minute or so, it would seem the the remote connect somehow would continuously drop. Neither lldb or the guest environment would notice this or complain - just every command would seemingly either silently fail or error out for unknown Python reasons.</p>
+<p>At this point I was getting a bit frustrated. I had to have done something wrong: The entire set up got trashed and I started again, checking every step to ensure I was doing it correctly. Though the resulting set up seemed to always have the same outcome - 60 or so seconds of debug time and then a reboot would be required to connect again. This clearly wasn’t a workable option. I blindly started tweeting some rage about how silly debugging kernel code on MacOS seemed to be, no documentation I could find correctly explained getting it working, and seemingly no one had ever run into this problem. Magically, complaining on twitter did something and a friend I met at <a href="https://www.hoodsec.org" target="_blank" rel="external">Hoodsec</a> mentioned something along the lines of <em>“lldb kdb over udp is often laggy and not stable, use gdb”</em>. Without attempting to start an <code>emacs vs vim</code> style fight, I immediately loved the idea since I prefer <code>gdb</code> over <code>lldb</code> anyway - it just seems to be a comfort zone for me. Off to Google - more about using <code>gdb</code> to debug kexts I come across <a href="http://ho.ax/posts/2012/02/vmware-hardware-debugging/" target="_blank" rel="external">Snare’s post on the matter</a>.</p>
+<p>Not only is this post simple to understand, it is essentially the exact setup I was using. Turns out that VMWare made it pretty easy for us, since they have a <code>debugStub</code> which can be enabled on any VM. Opening up the VM config file, for me it was in <code>~/VMs/OSX10_11_5.vmwarevm/OSX10_11_5.vmx</code> and adding the following lines at the bottom (while VM is not running).<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">debugStub.listen.guest32 = &quot;TRUE&quot;</div><div class="line">debugStub.listen.guest64 = &quot;TRUE&quot;</div></pre></td></tr></table></figure></p>
+<p>This seems like it will work great, except Apple no longer ships <code>gdb</code> nor does it ship any macros to assist debugging for <code>gdb</code> anymore. Luckily someone has done all the work for us, thanks OSXreverser! Pedro wrote a great article a few years back about compiling <code>gdb</code> which can be <a href="https://reverse.put.as/2013/03/20/how-to-compile-gdb-in-mountain-lion-updated/" target="_blank" rel="external">found on his blog</a>. After that, go snag the repo <a href="https://github.com/gdbinit/kgmacros" target="_blank" rel="external">gdbinit/kgmacros</a> which contains the older macros which /mostly/ work for newer kernels. If you didn’t already have the <code>.gdbinit</code> script from Pedro, you should also <a href="https://github.com/gdbinit/Gdbinit" target="_blank" rel="external">get and install that</a>. After getting all this preparation work done, fire the VM back up and prepare gdb before connection. Target the kernel the guest machine is using, add the symbols for it and then load the helper macros and connect to the guest.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">diff@rigby:[~/kext_work/] $ gdb /Library/Developer/KDKs/KDK_10.11.5_15F34.kdk/System/Library/Kernels/kernel</div><div class="line">GNU gdb 6.3.50-20050815 (Apple version gdb-1824 + reverse.put.as patches v0.4) (Sat Jan  4 20:24:02 UTC 2014)</div><div class="line">Copyright 2004 Free Software Foundation, Inc.</div><div class="line">GDB is free software, covered by the GNU General Public License, and you are</div><div class="line">welcome to change it and/or distribute copies of it under certain conditions.</div><div class="line">Type &quot;show copying&quot; to see the conditions.</div><div class="line">There is absolutely no warranty for GDB.  Type &quot;show warranty&quot; for details.</div><div class="line">This GDB was configured as &quot;x86_64-apple-darwin&quot;...</div><div class="line">gdb$</div><div class="line">gdb$</div><div class="line">gdb$ add-symbol-file /Library/Developer/KDKs/KDK_10.11.5_15F34.kdk/System/Library/Kernels/kernel.dSYM/</div><div class="line">Added dsym &quot;/Library/Developer/KDKs/KDK_10.11.5_15F34.kdk/System/Library/Kernels/kernel.dSYM/&quot; to &quot;/Library/Developer/KDKs/KDK_10.11.5_15F34.kdk/System/Library/Kernels/kernel.dSYM/Contents/Resources/DWARF/kernel&quot;.</div><div class="line">gdb$</div><div class="line">gdb$ source  ~/repo/kgmacros/kgmacros_mavericks</div><div class="line">Loading Kernel GDB Macros package.  Type &quot;help kgm&quot; for more info.</div><div class="line">/Users/diff/repo/kgmacros/kgmacros_mavericks:6745: Error in sourced command file:</div><div class="line">No symbol &quot;ctrace_stack_size&quot; in current context.</div><div class="line">gdb$ target remote localhost:8864</div><div class="line">[New thread 1]</div><div class="line">warning: Error 268435459 getting port names from mach_port_names</div><div class="line">[Switching to process 1 thread 0x0]</div><div class="line">0xffffff801f7a25b8 in ?? ()</div><div class="line">-----------------------------------------------------------------------------------------------------------------------[regs]</div><div class="line">  RAX: 0x0000000000000000  RBX: 0x000000000000FFFF  RBP: 0xFFFFFF8059AB3E10  RSP: 0xFFFFFF8059AB3DF0  o d i t s z a P c</div><div class="line">  RDI: 0xFFFFFF801FE2D120  RSI: 0x0000000000000002  RDX: 0x00000000000000BC  RCX: 0x000000000000FFFF  RIP: 0xFFFFFF801F7A25B8</div><div class="line">  R8 : 0x0000000000000001  R9 : 0xFFFFFF8021D4A5D0  R10: 0xFFFFFF8059B05000  R11: 0xFFFFFF8059B15000  R12: 0xFFFFFF801FE2D150</div><div class="line">  R13: 0x000000000000000A  R14: 0x0000000000000001  R15: 0x0000000000000000</div><div class="line">  CS: 0008  DS: 0000  ES: 0000  FS: 0000  GS: 0000  SS: 0010</div><div class="line">  -----------------------------------------------------------------------------------------------------------------------[code]</div><div class="line">  0xffffff801f7a25b8:  83 3d d9 d2 75 00 00          cmp    DWORD PTR [rip+0x75d2d9],0x0        # 0xffffff801feff898</div><div class="line">  0xffffff801f7a25bf:  0f 85 7b ff ff ff             jne    0xffffff801f7a2540</div><div class="line">  0xffffff801f7a25c5:  b8 01 00 00 00                mov    eax,0x1</div><div class="line">  0xffffff801f7a25ca:  f0 48 29 05 ce d2 75 00       lock sub QWORD PTR [rip+0x75d2ce],rax        # 0xffffff801feff8a0</div><div class="line">  0xffffff801f7a25d2:  48 83 c4 08                   add    rsp,0x8</div><div class="line">  0xffffff801f7a25d6:  5b                            pop    rbx</div><div class="line">  0xffffff801f7a25d7:  41 5e                         pop    r14</div><div class="line">  0xffffff801f7a25d9:  41 5f                         pop    r15</div><div class="line">  -----------------------------------------------------------------------------------------------------------------------------</div><div class="line">  Kernel is located in memory at 0xffffff801f600000 with uuid of 749F71AC-4136-320E-8416-570E59A180B4</div><div class="line">  Kernel slid 0x1f400000 in memory.</div><div class="line">  Current language:  auto; currently minimal</div><div class="line">gdb$</div></pre></td></tr></table></figure></p>
+<p>Awesome! Now we have a fully functional MacOS guest and a host connected with a debugger. Haven’t had any issues with disconnects yet while using <code>gdb</code>. It also might be worth noting that many people have said you can also connect <code>lldb</code> to this debugStub using it’s <code>gdb-remote</code> command using the command <code>(lldb) gdb-remote localhost:8864</code>.</p>
+<p>Afterthoughts - something very wrong might be lurking in my set up and may have been causing the udp issues with the kernel debugger,  especially since I can’t really find anyone else discussing this problem. I was also loaded on pain medication due to a motorcycle  accident, so it is extremely likely that I misread something or came up with my solutions in backwards ways. Regardless, this seems to have worked. Discussing this on twitter and slack with a few people, it seems like many others rely on the VMWare debugStub - though <a href="https://twitter.com/i0n1c" target="_blank" rel="external">@i0n1c</a> disagrees with me and said there must be something wrong with my setup. He is probably correct. If I end up solving the underlying issue, I will post the solution here. This blog was primarily just to serve as a culmination of all the random things I ended up trying to get this to work so I don’t have to go through the pain again. Hopefully someone else finds this useful!</p>
+<p>Special thanks to <a href="https://twitter.com/tamakikusu" target="_blank" rel="external">@tamakikusu</a>, <a href="https://twitter.com/OngEmil" target="_blank" rel="external">@OngEmil</a> and all of <a href="https://twitter.com/RedNagaSec" target="_blank" rel="external">@RedNagaSec</a> for your assistance both in knowledge, editing and insults to keep the world humble.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rednaga.github.io/2017/04/09/remote_kext_debugging/" data-id="cj1b83lrc000152vbz0jagyn7" class="article-share-link">Share</a>
+      
+        <a href="https://rednaga.github.io/2017/04/09/remote_kext_debugging/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gdb/">gdb</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kernel/">kernel</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kext/">kext</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/lldb/">lldb</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/macos/">macos</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/research/">research</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/reverse-engineering/">reverse engineering</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vmware/">vmware</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/11/14/hackingteam_back_for_your_androids/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">HackingTeam back for your Androids, now extra insecure!</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/04/09/remote_kext_debugging/">Remote Kext Debugging (No, really - it worked!)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/14/hackingteam_back_for_your_androids/">HackingTeam back for your Androids, now extra insecure!</a>
+          </li>
+        
+          <li>
+            <a href="/2016/09/21/reversing_go_binaries_like_a_pro/">Reversing GO binaries like a pro</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/31/detecting_pirated_and_malicious_android_apps_with_apkid/">Detecting Pirated and Malicious Android Apps with APKiD</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/30/apkid_and_android_compiler_fingerprinting/">APKiD and Android Compiler Fingerprinting</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    <div class="widget-wrap">
+  <h3 class="widget-title">Pages</h3>
+  <div class="widget pages">
+    <a href="/team-rednaga">Team RedNaga</a>
+  </div>
+</div>
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apkid/">apkid</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gdb/">gdb</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/">golang</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hackingteam/">hackingteam</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ida-pro/">ida pro</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kernel/">kernel</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kext/">kext</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lldb/">lldb</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/macos/">macos</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/research/">research</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/reverse-engineering/">reverse engineering</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/surveillance/">surveillance</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vmware/">vmware</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/apkid/" style="font-size: 15px;">apkid</a> <a href="/tags/gdb/" style="font-size: 10px;">gdb</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/hackingteam/" style="font-size: 10px;">hackingteam</a> <a href="/tags/ida-pro/" style="font-size: 15px;">ida pro</a> <a href="/tags/kernel/" style="font-size: 10px;">kernel</a> <a href="/tags/kext/" style="font-size: 10px;">kext</a> <a href="/tags/lldb/" style="font-size: 10px;">lldb</a> <a href="/tags/macos/" style="font-size: 10px;">macos</a> <a href="/tags/research/" style="font-size: 20px;">research</a> <a href="/tags/reverse-engineering/" style="font-size: 15px;">reverse engineering</a> <a href="/tags/surveillance/" style="font-size: 10px;">surveillance</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+  
+    <div id="twitter-feed" class="widget-wrap">
+  <h3 class="widget-title">Twitter Feed</h3>
+  <div class="widget">
+    <a class="twitter-timeline" href="https://twitter.com/RedNagaSec">Tweets by RedNagaSec</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+  </div>
+</div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 RedNaga<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'rednaga';
+  
+  var disqus_url = 'https://rednaga.github.io/2017/04/09/remote_kext_debugging/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
