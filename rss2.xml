@@ -4,9 +4,9 @@
   <subtitle>spicy security research</subtitle>
   <link href="/rss2.xml" rel="self"/>
   
-  <link href="https://rednaga.github.io/"/>
+  <link href="https://rednaga.io/"/>
   <updated>2017-10-29T00:30:34.000Z</updated>
-  <id>https://rednaga.github.io/</id>
+  <id>https://rednaga.io/</id>
   
   <author>
     <name>RedNaga</name>
@@ -17,8 +17,8 @@
   
   <entry>
     <title>Hacking with dex-oracle for Android Malware Deobfuscation</title>
-    <link href="https://rednaga.github.io/2017/10/28/hacking-with-dex-oracle-for-android-malware-deobfuscation/"/>
-    <id>https://rednaga.github.io/2017/10/28/hacking-with-dex-oracle-for-android-malware-deobfuscation/</id>
+    <link href="https://rednaga.io/2017/10/28/hacking-with-dex-oracle-for-android-malware-deobfuscation/"/>
+    <id>https://rednaga.io/2017/10/28/hacking-with-dex-oracle-for-android-malware-deobfuscation/</id>
     <published>2017-10-28T07:00:00.000Z</published>
     <updated>2017-10-29T00:30:34.000Z</updated>
     
@@ -92,20 +92,20 @@
     </summary>
     
     
-      <category term="dex-oracle" scheme="https://rednaga.github.io/tags/dex-oracle/"/>
+      <category term="dex-oracle" scheme="https://rednaga.io/tags/dex-oracle/"/>
     
-      <category term="android" scheme="https://rednaga.github.io/tags/android/"/>
+      <category term="android" scheme="https://rednaga.io/tags/android/"/>
     
-      <category term="malware" scheme="https://rednaga.github.io/tags/malware/"/>
+      <category term="malware" scheme="https://rednaga.io/tags/malware/"/>
     
-      <category term="deobfuscation" scheme="https://rednaga.github.io/tags/deobfuscation/"/>
+      <category term="deobfuscation" scheme="https://rednaga.io/tags/deobfuscation/"/>
     
   </entry>
   
   <entry>
     <title>Remote Kext Debugging (No, really - it worked!)</title>
-    <link href="https://rednaga.github.io/2017/04/09/remote_kext_debugging/"/>
-    <id>https://rednaga.github.io/2017/04/09/remote_kext_debugging/</id>
+    <link href="https://rednaga.io/2017/04/09/remote_kext_debugging/"/>
+    <id>https://rednaga.io/2017/04/09/remote_kext_debugging/</id>
     <published>2017-04-09T07:00:00.000Z</published>
     <updated>2017-10-29T00:35:07.000Z</updated>
     
@@ -146,28 +146,28 @@
     </summary>
     
     
-      <category term="research" scheme="https://rednaga.github.io/tags/research/"/>
+      <category term="research" scheme="https://rednaga.io/tags/research/"/>
     
-      <category term="kext" scheme="https://rednaga.github.io/tags/kext/"/>
+      <category term="kext" scheme="https://rednaga.io/tags/kext/"/>
     
-      <category term="macos" scheme="https://rednaga.github.io/tags/macos/"/>
+      <category term="macos" scheme="https://rednaga.io/tags/macos/"/>
     
-      <category term="lldb" scheme="https://rednaga.github.io/tags/lldb/"/>
+      <category term="lldb" scheme="https://rednaga.io/tags/lldb/"/>
     
-      <category term="gdb" scheme="https://rednaga.github.io/tags/gdb/"/>
+      <category term="gdb" scheme="https://rednaga.io/tags/gdb/"/>
     
-      <category term="vmware" scheme="https://rednaga.github.io/tags/vmware/"/>
+      <category term="vmware" scheme="https://rednaga.io/tags/vmware/"/>
     
-      <category term="kernel" scheme="https://rednaga.github.io/tags/kernel/"/>
+      <category term="kernel" scheme="https://rednaga.io/tags/kernel/"/>
     
-      <category term="reverse engineering" scheme="https://rednaga.github.io/tags/reverse-engineering/"/>
+      <category term="reverse engineering" scheme="https://rednaga.io/tags/reverse-engineering/"/>
     
   </entry>
   
   <entry>
     <title>HackingTeam back for your Androids, now extra insecure!</title>
-    <link href="https://rednaga.github.io/2016/11/14/hackingteam_back_for_your_androids/"/>
-    <id>https://rednaga.github.io/2016/11/14/hackingteam_back_for_your_androids/</id>
+    <link href="https://rednaga.io/2016/11/14/hackingteam_back_for_your_androids/"/>
+    <id>https://rednaga.io/2016/11/14/hackingteam_back_for_your_androids/</id>
     <published>2016-11-14T08:00:00.000Z</published>
     <updated>2017-10-29T00:34:59.000Z</updated>
     
@@ -247,7 +247,7 @@
 <p><img src="/images/hackingteam_back_for_your_androids/func_jsonnull.png" alt=""></p>
 <p>It’s just a a modified <a href="https://en.wikipedia.org/wiki/XOR_cipher" target="_blank" rel="external">XOR cipher</a> with a modifier being passed in as an argument. Translated to Python:</p>
 <figure class="highlight python"><figcaption><span>xor.py</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">decrypt</span><span class="params">(encrypted, mod)</span>:</span></div><div class="line">    <span class="keyword">if</span> <span class="keyword">not</span> encrypted <span class="keyword">or</span> <span class="keyword">not</span> mod:</div><div class="line">        <span class="keyword">return</span> <span class="string">''</span></div><div class="line"></div><div class="line">    mod = mod - <span class="number">0x5</span></div><div class="line">    out = <span class="string">''</span></div><div class="line">    <span class="keyword">for</span> char <span class="keyword">in</span> list(encrypted):</div><div class="line">        out = <span class="string">'%s%s'</span> % (out, unichr(ord(char) ^ (mod &amp; <span class="number">0x5F</span>)))</div><div class="line">        mod = (mod - <span class="number">0xB</span>)</div><div class="line"></div><div class="line">    <span class="keyword">return</span> out.encode(<span class="string">'ascii'</span>, <span class="string">'replace'</span>).encode(<span class="string">'UTF-32'</span>)</div></pre></td></tr></table></figure>
-<h3 id="Decrypting-Strings-with-IDA"><a href="#Decrypting-Strings-with-IDA" class="headerlink" title="Decrypting Strings with IDA"></a><a name="Decrypting-the-Strings"></a>Decrypting Strings with IDA</h3><p>I wanted to dump all of decrypted strings to a file and also inline them as comments where they were being used. The <code>decryptor.py</code> IDA plugin below works by looking in the Dalvik code for the opcodes <code>const-string</code> paired with <code>const/16</code> to get the encrypted string and XOR cipher mod argument. Then, it looks for the <code>invoke-static</code> opcode with the method <code>JsonNull.startsWith()</code>. If this pattern is matched we can pass the arguments into our reversed decryption method to get the decrypted string. Finally, this string is added as a comment near the encrypted string. The processes reuses some of the code for adding load strings for Go files described in a <a href="http://rednaga.io/2016/09/21/reversing_go_binaries_like_a_pro/" target="_blank" rel="external">previous blog post</a>.</p>
+<h3 id="Decrypting-Strings-with-IDA"><a href="#Decrypting-Strings-with-IDA" class="headerlink" title="Decrypting Strings with IDA"></a><a name="Decrypting-the-Strings"></a>Decrypting Strings with IDA</h3><p>I wanted to dump all of decrypted strings to a file and also inline them as comments where they were being used. The <code>decryptor.py</code> IDA plugin below works by looking in the Dalvik code for the opcodes <code>const-string</code> paired with <code>const/16</code> to get the encrypted string and XOR cipher mod argument. Then, it looks for the <code>invoke-static</code> opcode with the method <code>JsonNull.startsWith()</code>. If this pattern is matched we can pass the arguments into our reversed decryption method to get the decrypted string. Finally, this string is added as a comment near the encrypted string. The processes reuses some of the code for adding load strings for Go files described in a <a href="http://rednaga.io/2016/09/21/reversing_go_binaries_like_a_pro/">previous blog post</a>.</p>
 <p>It turned out there was more than just the <code>JsonNull.startsWith()</code> decryption method. I saw the literal values of <code>-0x5</code> and <code>-0xB</code> change between the decryption methods. To support these other methods, I moved these out of the code and into the <code>mod1</code> and <code>mod2</code> arguments.</p>
 <p>Please note that the way this code loads strings from the string table is annoying. After messaging IDA support about why it was so difficult, they informed me that there was a better way. Apparently, I should have used the <a href="https://www.hex-rays.com/products/ida/support/idadoc/1218.shtml" target="_blank" rel="external"><code>DecodeInstruction</code></a> function. I’ll likely try to rework this code later to use this.</p>
 <p>After a bit of movie magic, we end up with the code below.</p>
@@ -361,24 +361,24 @@
     </summary>
     
     
-      <category term="research" scheme="https://rednaga.github.io/tags/research/"/>
+      <category term="research" scheme="https://rednaga.io/tags/research/"/>
     
-      <category term="android" scheme="https://rednaga.github.io/tags/android/"/>
+      <category term="android" scheme="https://rednaga.io/tags/android/"/>
     
-      <category term="reverse engineering" scheme="https://rednaga.github.io/tags/reverse-engineering/"/>
+      <category term="reverse engineering" scheme="https://rednaga.io/tags/reverse-engineering/"/>
     
-      <category term="ida pro" scheme="https://rednaga.github.io/tags/ida-pro/"/>
+      <category term="ida pro" scheme="https://rednaga.io/tags/ida-pro/"/>
     
-      <category term="hackingteam" scheme="https://rednaga.github.io/tags/hackingteam/"/>
+      <category term="hackingteam" scheme="https://rednaga.io/tags/hackingteam/"/>
     
-      <category term="surveillance" scheme="https://rednaga.github.io/tags/surveillance/"/>
+      <category term="surveillance" scheme="https://rednaga.io/tags/surveillance/"/>
     
   </entry>
   
   <entry>
     <title>Reversing GO binaries like a pro</title>
-    <link href="https://rednaga.github.io/2016/09/21/reversing_go_binaries_like_a_pro/"/>
-    <id>https://rednaga.github.io/2016/09/21/reversing_go_binaries_like_a_pro/</id>
+    <link href="https://rednaga.io/2016/09/21/reversing_go_binaries_like_a_pro/"/>
+    <id>https://rednaga.io/2016/09/21/reversing_go_binaries_like_a_pro/</id>
     <published>2016-09-21T07:00:00.000Z</published>
     <updated>2017-10-29T00:35:14.000Z</updated>
     
@@ -430,18 +430,18 @@
     </summary>
     
     
-      <category term="research" scheme="https://rednaga.github.io/tags/research/"/>
+      <category term="research" scheme="https://rednaga.io/tags/research/"/>
     
-      <category term="golang" scheme="https://rednaga.github.io/tags/golang/"/>
+      <category term="golang" scheme="https://rednaga.io/tags/golang/"/>
     
-      <category term="ida pro" scheme="https://rednaga.github.io/tags/ida-pro/"/>
+      <category term="ida pro" scheme="https://rednaga.io/tags/ida-pro/"/>
     
   </entry>
   
   <entry>
     <title>Detecting Pirated and Malicious Android Apps with APKiD</title>
-    <link href="https://rednaga.github.io/2016/07/31/detecting_pirated_and_malicious_android_apps_with_apkid/"/>
-    <id>https://rednaga.github.io/2016/07/31/detecting_pirated_and_malicious_android_apps_with_apkid/</id>
+    <link href="https://rednaga.io/2016/07/31/detecting_pirated_and_malicious_android_apps_with_apkid/"/>
+    <id>https://rednaga.io/2016/07/31/detecting_pirated_and_malicious_android_apps_with_apkid/</id>
     <published>2016-07-31T07:00:00.000Z</published>
     <updated>2017-10-29T00:28:18.000Z</updated>
     
@@ -492,16 +492,16 @@
     </summary>
     
     
-      <category term="apkid" scheme="https://rednaga.github.io/tags/apkid/"/>
+      <category term="apkid" scheme="https://rednaga.io/tags/apkid/"/>
     
-      <category term="research" scheme="https://rednaga.github.io/tags/research/"/>
+      <category term="research" scheme="https://rednaga.io/tags/research/"/>
     
   </entry>
   
   <entry>
     <title>APKiD and Android Compiler Fingerprinting</title>
-    <link href="https://rednaga.github.io/2016/07/30/apkid_and_android_compiler_fingerprinting/"/>
-    <id>https://rednaga.github.io/2016/07/30/apkid_and_android_compiler_fingerprinting/</id>
+    <link href="https://rednaga.io/2016/07/30/apkid_and_android_compiler_fingerprinting/"/>
+    <id>https://rednaga.io/2016/07/30/apkid_and_android_compiler_fingerprinting/</id>
     <published>2016-07-30T07:00:00.000Z</published>
     <updated>2017-10-29T00:34:36.000Z</updated>
     
@@ -523,9 +523,9 @@
     </summary>
     
     
-      <category term="apkid" scheme="https://rednaga.github.io/tags/apkid/"/>
+      <category term="apkid" scheme="https://rednaga.io/tags/apkid/"/>
     
-      <category term="research" scheme="https://rednaga.github.io/tags/research/"/>
+      <category term="research" scheme="https://rednaga.io/tags/research/"/>
     
   </entry>
   

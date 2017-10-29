@@ -23,7 +23,7 @@ Data Exfiltration
 Is it HackingTeam">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HackingTeam back for your Androids, now extra insecure!">
-<meta property="og:url" content="https://rednaga.github.io/2016/11/14/hackingteam_back_for_your_androids/index.html">
+<meta property="og:url" content="https://rednaga.io/2016/11/14/hackingteam_back_for_your_androids/index.html">
 <meta property="og:site_name" content="RedNaga Security">
 <meta property="og:description" content="Table of Contents
 Soapbox Prelude
@@ -41,13 +41,13 @@ Data Exfiltration
 
 
 Is it HackingTeam">
-<meta property="og:image" content="https://rednaga.github.io/images/hackingteam_back_for_your_androids/koodous_search_results.png">
-<meta property="og:image" content="https://rednaga.github.io/images/hackingteam_back_for_your_androids/Jon-Hamm-Sure-Thing.gif">
-<meta property="og:image" content="https://rednaga.github.io/images/hackingteam_back_for_your_androids/encrypted_mainservice.png">
-<meta property="og:image" content="https://rednaga.github.io/images/hackingteam_back_for_your_androids/encrypted_strings.png">
-<meta property="og:image" content="https://rednaga.github.io/images/hackingteam_back_for_your_androids/func_jsonnull.png">
-<meta property="og:image" content="https://rednaga.github.io/images/hackingteam_back_for_your_androids/func_decrypted.png">
-<meta property="og:image" content="https://rednaga.github.io/images/hackingteam_back_for_your_androids/burp.png">
+<meta property="og:image" content="https://rednaga.io/images/hackingteam_back_for_your_androids/koodous_search_results.png">
+<meta property="og:image" content="https://rednaga.io/images/hackingteam_back_for_your_androids/Jon-Hamm-Sure-Thing.gif">
+<meta property="og:image" content="https://rednaga.io/images/hackingteam_back_for_your_androids/encrypted_mainservice.png">
+<meta property="og:image" content="https://rednaga.io/images/hackingteam_back_for_your_androids/encrypted_strings.png">
+<meta property="og:image" content="https://rednaga.io/images/hackingteam_back_for_your_androids/func_jsonnull.png">
+<meta property="og:image" content="https://rednaga.io/images/hackingteam_back_for_your_androids/func_decrypted.png">
+<meta property="og:image" content="https://rednaga.io/images/hackingteam_back_for_your_androids/burp.png">
 <meta property="og:updated_time" content="2017-10-29T00:34:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HackingTeam back for your Androids, now extra insecure!">
@@ -67,7 +67,7 @@ Data Exfiltration
 
 
 Is it HackingTeam">
-<meta name="twitter:image" content="https://rednaga.github.io/images/hackingteam_back_for_your_androids/koodous_search_results.png">
+<meta name="twitter:image" content="https://rednaga.io/images/hackingteam_back_for_your_androids/koodous_search_results.png">
 <meta name="twitter:creator" content="@RedNagaSec">
   
     <link rel="alternative" href="/rss2.xml" title="RedNaga Security" type="application/atom+xml">
@@ -145,7 +145,7 @@ ga('send', 'pageview');
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rednaga.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rednaga.io"></form>
       </div>
     </div>
   </div>
@@ -249,7 +249,7 @@ ga('send', 'pageview');
 <p><img src="/images/hackingteam_back_for_your_androids/func_jsonnull.png" alt=""></p>
 <p>It’s just a a modified <a href="https://en.wikipedia.org/wiki/XOR_cipher" target="_blank" rel="external">XOR cipher</a> with a modifier being passed in as an argument. Translated to Python:</p>
 <figure class="highlight python"><figcaption><span>xor.py</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">decrypt</span><span class="params">(encrypted, mod)</span>:</span></div><div class="line">    <span class="keyword">if</span> <span class="keyword">not</span> encrypted <span class="keyword">or</span> <span class="keyword">not</span> mod:</div><div class="line">        <span class="keyword">return</span> <span class="string">''</span></div><div class="line"></div><div class="line">    mod = mod - <span class="number">0x5</span></div><div class="line">    out = <span class="string">''</span></div><div class="line">    <span class="keyword">for</span> char <span class="keyword">in</span> list(encrypted):</div><div class="line">        out = <span class="string">'%s%s'</span> % (out, unichr(ord(char) ^ (mod &amp; <span class="number">0x5F</span>)))</div><div class="line">        mod = (mod - <span class="number">0xB</span>)</div><div class="line"></div><div class="line">    <span class="keyword">return</span> out.encode(<span class="string">'ascii'</span>, <span class="string">'replace'</span>).encode(<span class="string">'UTF-32'</span>)</div></pre></td></tr></table></figure>
-<h3 id="Decrypting-Strings-with-IDA"><a href="#Decrypting-Strings-with-IDA" class="headerlink" title="Decrypting Strings with IDA"></a><a name="Decrypting-the-Strings"></a>Decrypting Strings with IDA</h3><p>I wanted to dump all of decrypted strings to a file and also inline them as comments where they were being used. The <code>decryptor.py</code> IDA plugin below works by looking in the Dalvik code for the opcodes <code>const-string</code> paired with <code>const/16</code> to get the encrypted string and XOR cipher mod argument. Then, it looks for the <code>invoke-static</code> opcode with the method <code>JsonNull.startsWith()</code>. If this pattern is matched we can pass the arguments into our reversed decryption method to get the decrypted string. Finally, this string is added as a comment near the encrypted string. The processes reuses some of the code for adding load strings for Go files described in a <a href="http://rednaga.io/2016/09/21/reversing_go_binaries_like_a_pro/" target="_blank" rel="external">previous blog post</a>.</p>
+<h3 id="Decrypting-Strings-with-IDA"><a href="#Decrypting-Strings-with-IDA" class="headerlink" title="Decrypting Strings with IDA"></a><a name="Decrypting-the-Strings"></a>Decrypting Strings with IDA</h3><p>I wanted to dump all of decrypted strings to a file and also inline them as comments where they were being used. The <code>decryptor.py</code> IDA plugin below works by looking in the Dalvik code for the opcodes <code>const-string</code> paired with <code>const/16</code> to get the encrypted string and XOR cipher mod argument. Then, it looks for the <code>invoke-static</code> opcode with the method <code>JsonNull.startsWith()</code>. If this pattern is matched we can pass the arguments into our reversed decryption method to get the decrypted string. Finally, this string is added as a comment near the encrypted string. The processes reuses some of the code for adding load strings for Go files described in a <a href="http://rednaga.io/2016/09/21/reversing_go_binaries_like_a_pro/">previous blog post</a>.</p>
 <p>It turned out there was more than just the <code>JsonNull.startsWith()</code> decryption method. I saw the literal values of <code>-0x5</code> and <code>-0xB</code> change between the decryption methods. To support these other methods, I moved these out of the code and into the <code>mod1</code> and <code>mod2</code> arguments.</p>
 <p>Please note that the way this code loads strings from the string table is annoying. After messaging IDA support about why it was so difficult, they informed me that there was a better way. Apparently, I should have used the <a href="https://www.hex-rays.com/products/ida/support/idadoc/1218.shtml" target="_blank" rel="external"><code>DecodeInstruction</code></a> function. I’ll likely try to rework this code later to use this.</p>
 <p>After a bit of movie magic, we end up with the code below.</p>
@@ -319,9 +319,9 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rednaga.github.io/2016/11/14/hackingteam_back_for_your_androids/" data-id="cj9c0zxk80019n6upgz6hqasn" class="article-share-link">Share</a>
+      <a data-url="https://rednaga.io/2016/11/14/hackingteam_back_for_your_androids/" data-id="cj9c1b6zc0019bmuph1cp8toy" class="article-share-link">Share</a>
       
-        <a href="https://rednaga.github.io/2016/11/14/hackingteam_back_for_your_androids/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://rednaga.io/2016/11/14/hackingteam_back_for_your_androids/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hackingteam/">hackingteam</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ida-pro/">ida pro</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/research/">research</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/reverse-engineering/">reverse engineering</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/surveillance/">surveillance</a></li></ul>
@@ -462,7 +462,7 @@ ga('send', 'pageview');
 <script>
   var disqus_shortname = 'rednaga';
   
-  var disqus_url = 'https://rednaga.github.io/2016/11/14/hackingteam_back_for_your_androids/';
+  var disqus_url = 'https://rednaga.io/2016/11/14/hackingteam_back_for_your_androids/';
   
   (function(){
     var dsq = document.createElement('script');

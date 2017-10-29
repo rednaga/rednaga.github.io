@@ -8,23 +8,23 @@
   <meta name="description" content="GO binaries are weird, or at least, that is where this all started out. While delving into some Linux malware named Rex, I came to the realization that I might need to understand more than I wanted to">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Reversing GO binaries like a pro">
-<meta property="og:url" content="https://rednaga.github.io/2016/09/21/reversing_go_binaries_like_a_pro/index.html">
+<meta property="og:url" content="https://rednaga.io/2016/09/21/reversing_go_binaries_like_a_pro/index.html">
 <meta property="og:site_name" content="RedNaga Security">
 <meta property="og:description" content="GO binaries are weird, or at least, that is where this all started out. While delving into some Linux malware named Rex, I came to the realization that I might need to understand more than I wanted to">
-<meta property="og:image" content="https://rednaga.github.io/images/reversing_go_binaries_like_a_pro/unstripped_main.png">
-<meta property="og:image" content="https://rednaga.github.io/images/reversing_go_binaries_like_a_pro/unstripped_main_main.png">
-<meta property="og:image" content="https://rednaga.github.io/images/reversing_go_binaries_like_a_pro/stripped_start.png">
-<meta property="og:image" content="https://rednaga.github.io/images/reversing_go_binaries_like_a_pro/stripped_main_main.png">
-<meta property="og:image" content="https://rednaga.github.io/images/reversing_go_binaries_like_a_pro/stripped_runtime_morestack_noctxt.png">
-<meta property="og:image" content="https://rednaga.github.io/images/reversing_go_binaries_like_a_pro/unstripped_runtime_morestack.png">
-<meta property="og:image" content="https://rednaga.github.io/images/reversing_go_binaries_like_a_pro/stripped_0808994B.png">
-<meta property="og:image" content="https://rednaga.github.io/images/reversing_go_binaries_like_a_pro/stripped_rex_no_strings.png">
-<meta property="og:image" content="https://rednaga.github.io/images/reversing_go_binaries_like_a_pro/stripped_rex_strings.png">
+<meta property="og:image" content="https://rednaga.io/images/reversing_go_binaries_like_a_pro/unstripped_main.png">
+<meta property="og:image" content="https://rednaga.io/images/reversing_go_binaries_like_a_pro/unstripped_main_main.png">
+<meta property="og:image" content="https://rednaga.io/images/reversing_go_binaries_like_a_pro/stripped_start.png">
+<meta property="og:image" content="https://rednaga.io/images/reversing_go_binaries_like_a_pro/stripped_main_main.png">
+<meta property="og:image" content="https://rednaga.io/images/reversing_go_binaries_like_a_pro/stripped_runtime_morestack_noctxt.png">
+<meta property="og:image" content="https://rednaga.io/images/reversing_go_binaries_like_a_pro/unstripped_runtime_morestack.png">
+<meta property="og:image" content="https://rednaga.io/images/reversing_go_binaries_like_a_pro/stripped_0808994B.png">
+<meta property="og:image" content="https://rednaga.io/images/reversing_go_binaries_like_a_pro/stripped_rex_no_strings.png">
+<meta property="og:image" content="https://rednaga.io/images/reversing_go_binaries_like_a_pro/stripped_rex_strings.png">
 <meta property="og:updated_time" content="2017-10-29T00:35:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Reversing GO binaries like a pro">
 <meta name="twitter:description" content="GO binaries are weird, or at least, that is where this all started out. While delving into some Linux malware named Rex, I came to the realization that I might need to understand more than I wanted to">
-<meta name="twitter:image" content="https://rednaga.github.io/images/reversing_go_binaries_like_a_pro/unstripped_main.png">
+<meta name="twitter:image" content="https://rednaga.io/images/reversing_go_binaries_like_a_pro/unstripped_main.png">
 <meta name="twitter:creator" content="@RedNagaSec">
   
     <link rel="alternative" href="/rss2.xml" title="RedNaga Security" type="application/atom+xml">
@@ -102,7 +102,7 @@ ga('send', 'pageview');
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rednaga.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rednaga.io"></form>
       </div>
     </div>
   </div>
@@ -173,9 +173,9 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rednaga.github.io/2016/09/21/reversing_go_binaries_like_a_pro/" data-id="cj9c0zxjq0008n6upc2ab7xfw" class="article-share-link">Share</a>
+      <a data-url="https://rednaga.io/2016/09/21/reversing_go_binaries_like_a_pro/" data-id="cj9c1b6yx0008bmup81cm1rdb" class="article-share-link">Share</a>
       
-        <a href="https://rednaga.github.io/2016/09/21/reversing_go_binaries_like_a_pro/#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://rednaga.io/2016/09/21/reversing_go_binaries_like_a_pro/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ida-pro/">ida pro</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/research/">research</a></li></ul>
@@ -316,7 +316,7 @@ ga('send', 'pageview');
 <script>
   var disqus_shortname = 'rednaga';
   
-  var disqus_url = 'https://rednaga.github.io/2016/09/21/reversing_go_binaries_like_a_pro/';
+  var disqus_url = 'https://rednaga.io/2016/09/21/reversing_go_binaries_like_a_pro/';
   
   (function(){
     var dsq = document.createElement('script');
