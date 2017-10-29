@@ -45,7 +45,8 @@ The past few years have been interesting in terms of surveillance and nation sta
 
 > Hacking Team will have to apply for an individual [export] license for each country. It will then be up to the Italian authorities to approve or deny any requests.
 
-Maybe someone can shed light on what this actually means? Does that mean that a license must be acquired for the country in which the implant is being deployed or does it mean the license must exist for the country which the buying entity exists? Regardless, it would seem that recently the Hacking Team [has had their global license reinstated](http://www.ilfattoquotidiano.it/2016/11/02/hacking-team-motivazione-inadeguata-il-consiglio-di-stato-contraddice-il-mise-sulla-revoca-dellautorizzazione-allexport/3163585/). So, in theory none of this matters... Or does it? 
+Maybe someone can shed light on what this actually means? Does that mean that a license must be acquired for the country in which the implant is being deployed or does it mean the license must exist for the country which the buying entity exists? Regardless, it would seem that recently the Hacking Team [has had their global license reinstated](http://www.ilfattoquotidiano.it/2016/11/02/hacking-team-motivazione-inadeguata-il-consiglio-di-stato-contraddice-il-mise-sulla-revoca-dellautorizzazione-allexport/3163585/). So, in theory none of this matters... Or does it?
+<!-- more -->
 
 The export license Hacking Team requires aren't easy to look up and victims of their implants aren't coming forward publicly. Do they even know they're infected? Do they just want to avoid publicly saying they got owned? It's anyone's guess.
 
@@ -85,7 +86,7 @@ Archive:  VODA.apk
   inflating: contents/classes.dex
   inflating: contents/META-INF/MANIFEST.SF
   inflating: contents/META-INF/CERT.MF
-  inflating: contents/META-INF/CERT.RSA  
+  inflating: contents/META-INF/CERT.RSA
 ```
 
 Nothing sticking out here. No native binaries to dig into. No hidden packages. No large high-entropy files without an extension floating around. A very vanilla looking Android application.
@@ -512,7 +513,7 @@ Dalvik Decryptor loaded...
 
 _I've snipped the output here for brevity. The full output is in the Appendiex for easy indexing of search engines. Some of the strings are unique across binaries and this may help people in the future._
 
-While skimming the strings, it's immediately interesting that there appear to be Italian phrases such as `Servizi Google` (`Google Service`) and `Aggiornamento effettuato con successo` (`Successful Update`). These strings are actually shown to the user and must be part of the app's cover. 
+While skimming the strings, it's immediately interesting that there appear to be Italian phrases such as `Servizi Google` (`Google Service`) and `Aggiornamento effettuato con successo` (`Successful Update`). These strings are actually shown to the user and must be part of the app's cover.
 
 Looking at the strings shows two servers to dig into:
 
@@ -601,7 +602,7 @@ SSL-Session:
     Protocol  : TLSv1.2
     Cipher    : ECDHE-RSA-DES-CBC3-SHA
     Session-ID: 58228216995B968253FD721FDD6C04C0E0327DF8AD823D413B95674DE72BA0F0
-    Session-ID-ctx: 
+    Session-ID-ctx:
     Master-Key: BD52BB92248C75A7BF9425B94E095357B63AE52BAAF221E7BEADEABF4A0AD971B09F957CD382A6F275B4AE2FD5DF49FD
     Key-Arg   : None
     PSK identity: None
@@ -811,7 +812,7 @@ Host: 68.233.237.11
 Accept-Encoding: gzip
 Content-Length: 2
 
-[] 
+[]
 ```
 
 #### <a name="AckRequestedActions-Response"></a>AckRequestedActions - Response
@@ -902,15 +903,15 @@ Dalvik Decryptor loaded...
 0x1571e : Error writing executed action registry
 0x157b2 : Warning, interrupt received while getting writer lock.
 0x15b70 : phone
-0x15ba6 :  IMEI: 
-0x15bf4 :  IMSI: 
+0x15ba6 :  IMEI:
+0x15bf4 :  IMSI:
 0x15c54 :  Board:
 0x15c76 :  Brand:
 0x15c9a :  Device:
-0x15d00 : Release: 
-0x15d22 :  CodeName: 
-0x15d46 :  Inc: 
-0x15d6a :  SDK: 
+0x15d00 : Release:
+0x15d22 :  CodeName:
+0x15d46 :  Inc:
+0x15d6a :  SDK:
 0x15e6a : Error writing identity file
 0x15f02 : Error loading identity file
 0x15f40 : ef7r2rq4o0pj5vxm
@@ -977,12 +978,12 @@ Dalvik Decryptor loaded...
 0x17604 : internal error: zip model is null
 0x17624 : zip parameters are null
 0x17734 : zip file path is empty
-0x17764 : zip file: 
+0x17764 : zip file:
 0x17786 :  already exists. To add files to existing zip file use addFile method
 0x177d8 : input file ArrayList is null, cannot create zip file
 0x17802 : One or more elements in the input ArrayList is not of type File
 0x17834 : folderToAdd is null, cannot create zip file from folder
-0x1788c : zip file: 
+0x1788c : zip file:
 0x178ae :  already exists. To add files to existing zip file use addFolder method
 0x178de : input parameters are null, cannot create zip file from folder
 0x17918 : folderToAdd is empty or null, cannot create Zip File from folder
@@ -1013,7 +1014,7 @@ Dalvik Decryptor loaded...
 0x1822c : zip model is null, corrupt zip file?
 0x18290 : file name is empty or null, cannot remove file
 0x182e2 : Zip file format does not allow updating split/spanned files
-0x18312 : could not find file header for file: 
+0x18312 : could not find file header for file:
 0x18358 : file header is null, cannot remove file
 0x183a2 : Zip file format does not allow updating split/spanned files
 0x18400 : input comment is null, cannot update zip file
@@ -1021,7 +1022,7 @@ Dalvik Decryptor loaded...
 0x18456 : zipModel is null, cannot update zip file
 0x18498 : end of central directory is null, cannot set comment
 0x184d0 : null or empty charset name
-0x18500 : unsupported charset: 
+0x18500 : unsupported charset:
 0x185ba : Zip Model is null
 0x18622 : invalid zip file
 0x187d6 : 9999
@@ -1056,7 +1057,7 @@ Dalvik Decryptor loaded...
 0x1935c : android.intent.category.ALTERNATIVE
 0x193dc : [##]
 0x19440 : [#]
-0x19476 : : 
+0x19476 : :
 0x1949c : date
 0x195fa : UTF-8
 0x1961e : Error while deserializing
@@ -1066,24 +1067,24 @@ Dalvik Decryptor loaded...
 0x196e8 : Error reading serialized stream: len of byte read not equal to file len
 0x197ba : datas
 0x197fc : .tmp
-0x19832 : Error reading serialized stream: file not exists. Filename: 
+0x19832 : Error reading serialized stream: file not exists. Filename:
 0x19856 :  Old file is present:
-0x1987c :  old file len: 
+0x1987c :  old file len:
 0x198b2 : Renaming old file!!!
 0x198f2 : .tmp
-0x19926 : Error reading serialized stream: file has zero len: 
+0x19926 : Error reading serialized stream: file has zero len:
 0x1994c :  Old file is present:
-0x19974 :  old file len: 
+0x19974 :  old file len:
 0x199aa : Renaming old file!!!
 0x19a0c : Error reading serialized stream: len of byte read not equal to file len
-0x19a3a : Error reading serialized stream: file has zero len: 
+0x19a3a : Error reading serialized stream: file has zero len:
 0x19a9c : ??gyre-)pnqrc0=xpm<jq~w~1/for<f/?sb1r-uzu~u~n&15Mt;hutbpa
 0x19bc8 : UTF-8
 0x19c9a : .tmp
 0x19cd2 : datas
-0x19d3a : Binary serialization testing: error reading serialized stream: file not exists. Filename: 
-0x19d86 : Binary serialization testing: error reading serialized stream: file has zero len. Filename: 
-0x19dac :  Len: 
+0x19d3a : Binary serialization testing: error reading serialized stream: file not exists. Filename:
+0x19d86 : Binary serialization testing: error reading serialized stream: file has zero len. Filename:
+0x19dac :  Len:
 0x1a0fa : KB
 0x1a114 : MB
 0x1a46c : yyyy.MM.dd_HH.mm.ss
@@ -1348,7 +1349,7 @@ l|!s	[Ioo
 0x1f0d0 : Max number of failures before to switch url
 0x1f10a : TimeToPersistBeforePrimaryServerSwitch
 0x1f11a : TimeToPersistBefore??m|f<etHp
-0x1f12a : Time (in mills) before to switch to base url 
+0x1f12a : Time (in mills) before to switch to base url
 0x1f166 : IdentityHolderFileName
 0x1f176 : IdentityHolderFileName
 0x1f186 : Identity ??`yhe
@@ -1447,79 +1448,79 @@ l|!s	[Ioo
 0x202c8 : android.intent.action.??HKRLVP
 0x202de : android.intent.action.SCREEN_OFF
 0x202f2 : android.intent.action.USER_PRESENT
-0x204f4 : *************************** ERROR EVENT: 
-0x2052a : ***************************  
-0x20542 : 
+0x204f4 : *************************** ERROR EVENT:
+0x2052a : ***************************
+0x20542 :
 
 
-0x2055a : 
+0x2055a :
 
 
-0x2057a : 
+0x2057a :
 
 
 0x20592 : *********************************************************************************
 0x205aa : ??
-0x205fc : *************************** 
-0x20632 : ***************************   
-0x20664 : 
+0x205fc : ***************************
+0x20632 : ***************************
+0x20664 :
 
 
-0x206b8 : 
+0x206b8 :
 
 
-0x206ea : 
+0x206ea :
 
 
-0x2071e : 
+0x2071e :
 
 
-0x20750 : Exception Type = 
-0x20790 : 
+0x20750 : Exception Type =
+0x20790 :
 
 
-0x207c2 : 
+0x207c2 :
 
 
-0x20874 : *************************** TRACE EVENT: 
-0x208aa : ***************************  
-0x208c2 : 
+0x20874 : *************************** TRACE EVENT:
+0x208aa : ***************************
+0x208c2 :
 
 
-0x208d8 : 
+0x208d8 :
 
 
-0x208f6 : 
+0x208f6 :
 
 
 0x2090e : *********************************************************************************
-0x20924 : 
+0x20924 :
 
 
 0x209f8 : Log__
 0x20a2e : .txt
 0x20b02 : 9000
-0x20d16 : #####Exception Details:   
-0x20d72 : 
+0x20d16 : #####Exception Details:
+0x20d72 :
 
 
-0x20dce : 
+0x20dce :
 
 
-0x20e44 : 
+0x20e44 :
 
 
-0x20e76 : 
+0x20e76 :
 
 
 0x20f84 : 873451679TRW68IO
 0x20ff0 : phone
-0x21010 : IMEI: 
-0x21036 :  MODEL: 
-0x210a2 :  Release: 
-0x210c6 :  CodeName: 
-0x210e8 :  Inc: 
-0x2110c :  SDK: 
+0x21010 : IMEI:
+0x21036 :  MODEL:
+0x210a2 :  Release:
+0x210c6 :  CodeName:
+0x210e8 :  Inc:
+0x2110c :  SDK:
 0x2115e : Error while elaborating sms command
 0x21216 : Aggiornamento effettuato con successo.
 0x21512 : Error executing SupportActivity delegate
@@ -1545,8 +1546,8 @@ l|!s	[Ioo
 0x21ca0 : surfaceDestroyed
 0x30b58 : 9009
 0x30bfc : 9009||
-0x30cfa : Free space is too low. Preallocated file has been deleted. Actual free space: 
-0x30d4a : Free space is low. Actual free space: 
+0x30cfa : Free space is too low. Preallocated file has been deleted. Actual free space:
+0x30d4a : Free space is low. Actual free space:
 0x30d90 : Error in Free Space Monitor
 0x30e76 : /Android/data/__android.data
 0x31152 : SMS Implementation Found....
@@ -1554,12 +1555,12 @@ l|!s	[Ioo
 0x311a4 : Error creating SmsCommand implementation.
 0x31244 : NotifyAlert
 0x312c0 : NotifyLog
-0x3140e : Error while zipping file: 
+0x3140e : Error while zipping file:
 0x3153c : Error while zipping.
 0x316fc : Error while Executing ActionExecutorManager.
 0x31ba0 : TLS
-0x31ca0 : Audio recording Error. What: 
-0x31cbe :   Extra: 
+0x31ca0 : Audio recording Error. What:
+0x31cbe :   Extra:
 0x321b0 : Error restarting recorder
 0x32454 : Error while reconnecting to camera
 0x32a84 : Recording Started.
@@ -1591,7 +1592,7 @@ l|!s	[Ioo
 0x3430a : /Android/data/
 0x34430 : Cannot find a valid storage path.
 0x344a8 : GetActionsPack
-0x3482a : Error while transfering file: 
+0x3482a : Error while transfering file:
 0x34918 : Error while transfering.
 0x34a48 : input parameter is null, cannot expand to 8 bytes
 0x34a72 : invalid byte length, cannot expand to 8 bytes
@@ -1621,7 +1622,7 @@ l|!s	[Ioo
 0x35aa6 : invalid signature for zip64 end of central directory record
 0x35f68 : invalid read parameters for local header
 0x35fca : invalid local header offset
-0x36044 : invalid local header signature for file: 
+0x36044 : invalid local header signature for file:
 0x361d6 : file name is null, cannot assign file name to local file header
 0x3627a : file.separator
 0x362bc : file.separator
@@ -1651,13 +1652,13 @@ l|!s	[Ioo
 0x37bfc : HmacSHA1
 0x37c0a : ISO-8859-1
 0x37c80 : invalid file header in init method of AESDecryptor
-0x37cb2 : invalid aes key strength for file: 
+0x37cb2 : invalid aes key strength for file:
 0x37d2a : empty or null password provided for AES Decryptor
 0x37d56 : invalid aes extra data record - in init method of AESDecryptor
 0x37d84 : HmacSHA1
 0x37de0 : invalid derived key
 0x37e7e : invalid derived password verifier for AES
-0x37eca : Wrong Password for file: 
+0x37eca : Wrong Password for file:
 0x37f80 : AES not initialized properly
 0x38132 : input password is empty or null in AES encrypter constructor
 0x3817c : Invalid key strength in AES encrypter constructor
@@ -1707,7 +1708,7 @@ l|!s	[Ioo
 0x3de84 : rw
 0x3e002 : file.separator
 0x3e028 : .z0
-0x3e07a : split file: 
+0x3e07a : split file:
 0x3e0a0 :  already exists in the current directory, cannot rename this file
 0x3e100 : file.separator
 0x3e128 : .z
@@ -1742,16 +1743,16 @@ l|!s	[Ioo
 0x42484 : local file header is null, cannot initialize input stream
 0x424e0 : local file header is null, cannot init decrypter
 0x42572 : unsupported encryption method
-0x42612 : CRC (MAC) check failed for 
-0x4267c : invalid CRC for file: 
+0x42612 : CRC (MAC) check failed for
+0x4267c : invalid CRC for file:
 0x426e0 :  - Wrong Password?
-0x42726 : invalid CRC (MAC) for file: 
+0x42726 : invalid CRC (MAC) for file:
 0x427b8 : file header is null, cannot get inputstream
 0x4281e : local header and file header do not match
 0x42930 : compression type not supported
-0x42950 : invalid decryptor when trying to calculate compressed size for AES encrypted file: 
-0x429c4 : AESExtraDataRecord does not exist for AES encrypted file: 
-0x42ae2 : zip split file does not exist: 
+0x42950 : invalid decryptor when trying to calculate compressed size for AES encrypted file:
+0x429c4 : AESExtraDataRecord does not exist for AES encrypted file:
+0x42ae2 : zip split file does not exist:
 0x42b56 : .z
 0x42bae : .z0
 0x42c36 : Invalid parameters passed during unzipping file. One or more of the parameters were null
@@ -1766,7 +1767,7 @@ l|!s	[Ioo
 0x43428 : starting offset is negative, cannot copy file
 0x434a8 : input parameter is null in getFilePointer, cannot create file handler to remove file
 0x43518 : zip model is null, cannot create split file handler
-0x4358e : split file does not exist: 
+0x4358e : split file does not exist:
 0x435f2 : .z0
 0x43650 : .z
 0x436d4 : one of the input parameters is null, cannot merge split zip file
@@ -1815,9 +1816,9 @@ l|!s	[Ioo
 0x45620 : path is null
 0x45684 : path is null
 0x456a2 : cannot read zip file
-0x456ce : file does not exist: 
+0x456ce : file does not exist:
 0x45740 : path is null
-0x4576c : file does not exist: 
+0x4576c : file does not exist:
 0x457a0 : cannot read zip file
 0x45800 : output path is null
 0x45844 : output folder is not valid
@@ -1846,14 +1847,14 @@ l|!s	[Ioo
 0x45e26 : Cp850
 0x45e48 : UTF8
 0x45e64 : UTF8
-0x45ec4 : zip model is null, cannot determine file header for fileName: 
+0x45ec4 : zip model is null, cannot determine file header for fileName:
 0x45efe : \\
 0x45f2a : \?
-0x45f60 : file name is null, cannot determine file header for fileName: 
-0x45fae : zip model is null, cannot determine file header with exact match for fileName: 
-0x45ffe : file Headers are null, cannot determine file header with exact match for fileName: 
-0x46082 : central directory is null, cannot determine file header with exact match for fileName: 
-0x460c4 : file name is null, cannot determine file header with exact match for fileName: 
+0x45f60 : file name is null, cannot determine file header for fileName:
+0x45fae : zip model is null, cannot determine file header with exact match for fileName:
+0x45ffe : file Headers are null, cannot determine file header with exact match for fileName:
+0x46082 : central directory is null, cannot determine file header with exact match for fileName:
+0x460c4 : file name is null, cannot determine file header with exact match for fileName:
 0x46154 : input file is null, cannot calculate file length
 0x461c0 : invalid file name
 0x4621e : input file is null, cannot get file name
@@ -1909,7 +1910,7 @@ l|!s	[Ioo
 0x479c0 : one of the input parameters is null, cannot add folder to zip
 0x47a50 : input folder does not exist
 0x47abc : input file is not a folder, user addFileToZip method to add files
-0x47af8 : cannot read folder: 
+0x47af8 : cannot read folder:
 0x47b56 : one of the input parameters is null, cannot add stream to zip
 0x47c08 : invalid end of central directory record
 997 strings decrypted

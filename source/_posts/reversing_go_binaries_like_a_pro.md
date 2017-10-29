@@ -9,6 +9,7 @@ author: tim
 ---
 
 GO binaries are weird, or at least, that is where this all started out. While delving into some [Linux malware named Rex](http://securityaffairs.co/wordpress/50556/malware/linux-rex-1-botnet.html), I came to the realization that I might need to understand more than I wanted to. Just the prior week I had been reversing [Linux Lady](https://news.drweb.com/news/?i=10140&lng=en) which was also written in GO, however it was not a stripped binary so it was pretty easy. Clearly the binary was rather large, many extra methods I didn't care about - though I really just didn't understand why. To be honest - I still haven't fully dug into the Golang code and have yet to really write much code in Go, so take this information at face value as some of it might be incorrect; this is just my experience while reversing some ELF Go binaries! If you don't want to read the whole page, or scroll to the bottom to get a link to the full repo, just go [here](https://github.com/strazzere/golang_loader_assist).
+<!-- more -->
 
 To illistrate some of my examples I'm going to use an extremely simple 'Hello, World!' example and also reference the Rex malware. The code and a Make file are extremely simple;
 
@@ -72,7 +73,7 @@ We now have no more function names, however - the function names appear to be re
 .gopclntab:0813E17C                 db  6Eh ; n
 {% endcodeblock %}
 
-Alright, so it would appear that there is something left over here. After digging into some of the Google results into `gopclntab` and tweet about this - a friendly reverser [George (Egor?) Zaytsev](https://twitter.com/groke1105) showed me his IDA Pro scripts for [renaming function and adding type information](https://gitlab.com/zaytsevgu/goutils). After skimming these it was pretty easy to figure out the format of this section so I threw together some functionally to replicate his script. The essential code is shown below, very simply put, we look into the segment `.gopclntab` and skip the first 8 bytes. We then create a pointer (`Qword` or `Dword` dependant on whether the binary is 64bit or not). The first set of data actually gives us the size of the `.gopclntab` table, so we know how far to go into this structure. Now we can start processing the rest of the data which appears to be the `function_offset` followed by the (function) `name_offset`). As we create pointers to these offsets and also tell IDA to create the strings, we just need to ensure we don't pass `MakeString` any bad characters so we use the `clean_function_name` function to strip out any badness. 
+Alright, so it would appear that there is something left over here. After digging into some of the Google results into `gopclntab` and tweet about this - a friendly reverser [George (Egor?) Zaytsev](https://twitter.com/groke1105) showed me his IDA Pro scripts for [renaming function and adding type information](https://gitlab.com/zaytsevgu/goutils). After skimming these it was pretty easy to figure out the format of this section so I threw together some functionally to replicate his script. The essential code is shown below, very simply put, we look into the segment `.gopclntab` and skip the first 8 bytes. We then create a pointer (`Qword` or `Dword` dependant on whether the binary is 64bit or not). The first set of data actually gives us the size of the `.gopclntab` table, so we know how far to go into this structure. Now we can start processing the rest of the data which appears to be the `function_offset` followed by the (function) `name_offset`). As we create pointers to these offsets and also tell IDA to create the strings, we just need to ensure we don't pass `MakeString` any bad characters so we use the `clean_function_name` function to strip out any badness.
 
 {% codeblock renamer.py lang:python %}
 def create_pointer(addr, force_size=None):
@@ -252,7 +253,7 @@ def traverse_xrefs(func):
             else:
                 debug('Function @ 0x%x already has a name %s' % (xref_func.startEA, ida_funcs.get_func_name(xref_func.startEA)))
 
-        func_xref = ida_xref.get_next_cref_to(func.startEA, func_xref) 
+        func_xref = ida_xref.get_next_cref_to(func.startEA, func_xref)
 
     return func_created
 
@@ -264,7 +265,7 @@ def find_func_by_name(name):
             return ida_funcs.get_func(addr)
 
     return None
-        
+
 def runtime_init():
     func_created = 0
 
@@ -274,7 +275,7 @@ def runtime_init():
     else:
         runtime_ms = create_runtime_ms()
         func_created = traverse_xrefs(runtime_ms)
-    
+
 
     return func_created
 {% endcodeblock %}

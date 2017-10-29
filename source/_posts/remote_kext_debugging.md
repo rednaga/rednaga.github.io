@@ -12,11 +12,12 @@ comments: true
 date: 2017-04-09 00:00
 author: tim
 ---
-			
+
 ![](/images/remote_kext_debugging/drinking.gif)
 This gif perfectly describe me attempting to connect debuggers to a kext using all the "simple" instructions on the internet.
 
 Recently I had far too much time on my hands and a Kext binary which seemed to pique my interest. After spending a bit of time analyzing the binary in IDA Pro, I wanted to prove out some theories I had by debugging it. A while back I had set up MacOS to be running as a QEMU/KVM machine - though I no longer had access to the hardware that I set this up on. The purpose of the previous use case was to have lots of instances up (fuzzing) as opposed to in depth debugging, and I had never actually wondered about debugging the kernel. Anyhoo - I decided to revisit setting up a virtualized instance of MacOS and decided to go the VMWare Fusion route. I had a license on the computer I had in front of me, wanted to continually do snapshots, and just assumed it would be easy to get it working locally. Well, I was sort of right?
+<!-- more -->
 
 The bulk of the VMWare fusion part was just following the [knowledgebase article from VMWare](https://kb.vmware.com/selfservice/microsites/search.do?language=en_US&cmd=displayKC&externalId=2129534) - there really isn't any magic to do there.
 
@@ -39,7 +40,7 @@ The workaround for this, which I assume everyone doing kernel debugging is using
    ```
    $ sudo nvram boot-args="debug=0x144 pmuflags=1 -v"
    ```
-Then reboot the machine. 
+Then reboot the machine.
 This allows us to have the debugger listen for *N*on-*M*asking *I*terrupts, which we can cause at any time. These can be create by pressing `Esc + Control + Option + Command` at the same time - if on a laptop where you  have turned on the "Use function keys as function keys" option, you'll need to hold the `fn` key as well. This will overlay text on the top left of your screen indicating the IP address to connect too.
 
  - On host, download and install Apple's "Kernel Debug Kit" which is specific to the kernel
@@ -108,7 +109,7 @@ warning: Error 268435459 getting port names from mach_port_names
   Kernel is located in memory at 0xffffff801f600000 with uuid of 749F71AC-4136-320E-8416-570E59A180B4
   Kernel slid 0x1f400000 in memory.
   Current language:  auto; currently minimal
-gdb$ 
+gdb$
 ```
 
 Awesome! Now we have a fully functional MacOS guest and a host connected with a debugger. Haven't had any issues with disconnects yet while using `gdb`. It also might be worth noting that many people have said you can also connect `lldb` to this debugStub using it's `gdb-remote` command using the command `(lldb) gdb-remote localhost:8864`.

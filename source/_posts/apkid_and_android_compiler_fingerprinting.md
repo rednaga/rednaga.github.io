@@ -9,6 +9,7 @@ author: caleb
 
 We recently gave a presentation at [HITCON 2016](http://hitcon.org/2016/CMT/) called [Android Compiler Fingerprinting](http://hitcon.org/2016/CMT/slide/day1-r0-e-1.pdf)
  where in we released a tool called: [APKiD](https://github.com/rednaga/APKiD). It's basically PEiD for Android -- it detects several compilers, obfuscators, and packers and we're adding to it whenever we find new stuff. You're welcome to submit your rules also.
+<!-- more -->
 
 Here's the full abstract:
 
